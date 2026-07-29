@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NYC Marathon 2026 — Kishan's Training Plan</title>
+<style>
+  :root { color-scheme: light;
+    --bg:#f7f6f3; --card:#ffffff; --ink:#1a1a1a; --muted:#6b6b6b; --line:#e6e3dc;
+    --run:#2563eb; --long:#7c3aed; --workout:#dc2626; --strength:#d97706; --rest:#059669; --travel:#db2777;
+    --accent:#111827;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--ink); padding:20px; max-width:960px; margin:0 auto; }
+  h1 { font-size:22px; letter-spacing:-0.02em; }
+  .sub { color:var(--muted); font-size:13px; margin-top:4px; }
+  .countdown { font-weight:600; color:var(--workout); }
+  .tabs { display:flex; gap:6px; margin:18px 0 14px; flex-wrap:wrap; position:sticky; top:0; background:var(--bg); padding:8px 0; z-index:5; }
+  .tab { border:1px solid var(--line); background:var(--card); border-radius:20px; padding:7px 14px; font-size:13px; cursor:pointer; font-weight:500; color:var(--muted); }
+  .tab.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .panel { display:none; } .panel.active { display:block; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:12px; }
+  .today-card { border-left:4px solid var(--run); }
+  .today-card h2 { font-size:15px; margin-bottom:6px; }
+  .pill { display:inline-block; font-size:11px; font-weight:600; padding:2px 8px; border-radius:10px; margin-right:6px; }
+  .pill.run{background:#dbeafe;color:var(--run)} .pill.long{background:#ede9fe;color:var(--long)}
+  .pill.workout{background:#fee2e2;color:var(--workout)} .pill.strength{background:#fef3c7;color:#92400e}
+  .pill.rest{background:#d1fae5;color:#065f46} .pill.travel{background:#fce7f3;color:var(--travel)}
+  .week { background:var(--card); border:1px solid var(--line); border-radius:12px; margin-bottom:10px; overflow:hidden; }
+  .week-head { padding:12px 16px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .week-head:hover { background:#fafaf8; }
+  .week-head .wtitle { font-weight:600; font-size:14px; }
+  .week-head .wmeta { font-size:12px; color:var(--muted); }
+  .week-body { display:none; border-top:1px solid var(--line); }
+  .week.open .week-body { display:block; }
+  .day { display:flex; gap:12px; padding:10px 16px; border-bottom:1px solid var(--line); align-items:flex-start; }
+  .day:last-child { border-bottom:none; }
+  .day.done { opacity:0.5; } .day.done .dtitle { text-decoration:line-through; }
+  .day.today-row { background:#eff6ff; }
+  .dcheck { margin-top:3px; width:16px; height:16px; accent-color:var(--run); cursor:pointer; flex-shrink:0; }
+  .ddate { width:64px; flex-shrink:0; font-size:12px; color:var(--muted); font-weight:600; padding-top:2px; }
+  .dtitle { font-size:13.5px; font-weight:600; }
+  .ddetail { font-size:12.5px; color:var(--muted); margin-top:2px; line-height:1.45; }
+  .prog { height:6px; background:var(--line); border-radius:3px; margin-top:10px; overflow:hidden; }
+  .prog > div { height:100%; background:var(--run); border-radius:3px; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th,td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); }
+  h3 { font-size:14px; margin:16px 0 8px; } .card h3:first-child { margin-top:0; }
+  p, li { font-size:13px; line-height:1.55; color:#333; }
+  ul { padding-left:18px; margin:6px 0; }
+  .note { font-size:12px; color:var(--muted); background:#fafaf8; border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin-top:10px; line-height:1.5; }
+  .warn { border-left:3px solid var(--workout); }
+  .good { border-left:3px solid var(--rest); }
+  .paces td:first-child { font-weight:600; white-space:nowrap; }
+</style>
+</head>
+<body>
+<h1>🗽 NYC Marathon — Nov 1, 2026</h1>
+<div class="sub">Goal: <b>sub-4:00</b> (9:09/mi) · decision point Week 9 · <span class="countdown" id="countdown"></span></div>
+<div class="prog"><div id="progbar" style="width:0%"></div></div>
+<div class="sub" id="progtext" style="margin-top:4px;"></div>
+
+<div class="tabs">
+  <button class="tab active" data-p="today">Today</button>
+  <button class="tab" data-p="plan">Training Plan</button>
+  <button class="tab" data-p="nutrition">Nutrition</button>
+  <button class="tab" data-p="strength">Strength</button>
+  <button class="tab" data-p="recovery">Recovery & Alcohol</button>
+  <button class="tab" data-p="race">Race Strategy</button>
+</div>
+
+<div class="panel active" id="p-today"><div id="todayContent"></div></div>
+
+<div class="panel" id="p-plan">
+  <div class="note">Tap a week to expand. Check off days as you go — progress saves on this device. Ask Claude to modify anything ("move my Week 8 long run to Sunday", "recalibrate paces from Strava") and this page gets updated.</div>
+  <div id="weeks"></div>
+</div>
+
+<div class="panel" id="p-nutrition">
+  <div class="card">
+    <h3>Daily Macros (147 lb / 67 kg — strength + endurance)</h3>
+    <table><tr><th>Day type</th><th>Calories</th><th>Protein</th><th>Carbs</th><th>Fat</th></tr>
+    <tr><td>Rest / walk day</td><td>2,300–2,500</td><td>140 g</td><td>230–260 g</td><td>~70 g</td></tr>
+    <tr><td>Easy run / strength day</td><td>2,600–2,800</td><td>145 g</td><td>320–350 g</td><td>~70 g</td></tr>
+    <tr><td>Workout / long run day</td><td>2,900–3,200</td><td>150 g</td><td>420–500 g</td><td>~65 g</td></tr></table>
+    <div class="note">You're 147 lbs training for a marathon — <b>under-eating is a bigger risk than over-eating.</b> Protein at every meal (30–40 g × 4). Don't cut carbs to "make room" for drinking calories; that wrecks both training and recovery.</div>
+  </div>
+  <div class="card">
+    <h3>Fueling by Run Type</h3>
+    <table><tr><th>Run</th><th>Before</th><th>During</th><th>After</th></tr>
+    <tr><td>Easy &lt; 60 min</td><td>Optional: banana or nothing (AM runs fine fasted if easy)</td><td>Water only</td><td>Normal meal within ~1 hr</td></tr>
+    <tr><td>Workout / tempo</td><td>30–60 g carbs 60–90 min before (toast + honey, oatmeal)</td><td>Water; electrolytes if hot/humid DC</td><td>25–30 g protein + 60–80 g carbs within 45 min</td></tr>
+    <tr><td>Long run 90 min+</td><td>2–3 hrs before: 80–120 g low-fiber carbs (bagel + banana + honey). Coffee fine.</td><td><b>30–60 g carbs/hr</b>: gel every 30–40 min starting at minute 40. 500–750 ml fluid/hr with sodium (500–700 mg/L). DC summer = start at sunrise.</td><td>3:1 carbs:protein shake immediately, real meal within 2 hrs. Salt your food.</td></tr>
+    <tr><td>Race day</td><td>3 hrs before: 100–120 g carbs. Sips of sports drink until start.</td><td>Gel at minute 40, then every 35–40 min (~5–6 total). Fluids at every other aid station.</td><td>Everything. You earned it.</td></tr></table>
+    <div class="note warn"><b>Practice race fueling from Week 8 onward.</b> Every long run 14 mi+ uses the exact gels/drink you'll use Nov 1. Nothing new on race day — including the celebration beer brand, honestly.</div>
+  </div>
+  <div class="card">
+    <h3>Carb Load (Oct 29–31)</h3>
+    <p>Final 3 days: 8–10 g carbs/kg = <b>530–670 g carbs/day</b>. Drop fiber and fat, eat white rice, pasta, bagels, pretzels, juice. You'll gain 2–3 lbs of water — that's glycogen, it's the plan working.</p>
+  </div>
+</div>
+
+<div class="panel" id="p-strength">
+  <div class="card">
+    <h3>Leg Day A — Marathon Strength (1×/wk, ~45 min)</h3>
+    <table><tr><th>Exercise</th><th>Sets × Reps</th><th>Why</th></tr>
+    <tr><td>Bulgarian split squat</td><td>3 × 8/leg</td><td>Single-leg strength = running is one-legged hops ×42,000</td></tr>
+    <tr><td>Single-leg Romanian deadlift</td><td>3 × 8/leg</td><td>Hamstring/glute durability, late-race form</td></tr>
+    <tr><td>Hip thrust or glute bridge (loaded)</td><td>3 × 10</td><td>Glute power, protects hamstrings</td></tr>
+    <tr><td>Straight-leg calf raise (slow, full range)</td><td>3 × 12</td><td>Achilles/calf — the #1 new-marathoner injury site</td></tr>
+    <tr><td>Bent-knee calf raise</td><td>3 × 12</td><td>Soleus — absorbs the most load at marathon pace</td></tr>
+    <tr><td>Lateral band walk + Copenhagen plank</td><td>2 × 12 / 2 × 20s</td><td>Glute med + adductors = knee & hip stability</td></tr></table>
+    <div class="note">Keep loads at RPE 7 — leave 2–3 reps in the tank. You're building durability, not maxing. Never within 24 hrs before a long run or workout. Taper: last heavy session Oct 7, bodyweight-only after Oct 14.</div>
+  </div>
+  <div class="card">
+    <h3>Day B — Upper + Core (1×/wk, ~35 min)</h3>
+    <table><tr><th>Exercise</th><th>Sets × Reps</th></tr>
+    <tr><td>Pull-ups or rows</td><td>3 × 8–10</td></tr>
+    <tr><td>DB overhead or bench press</td><td>3 × 8–10</td></tr>
+    <tr><td>Dead bug</td><td>3 × 10/side</td></tr>
+    <tr><td>Pallof press</td><td>3 × 10/side</td></tr>
+    <tr><td>Side plank</td><td>3 × 30s/side</td></tr></table>
+  </div>
+  <div class="card">
+    <h3>Hotel / Travel Circuit (25–30 min, high impact, no equipment)</h3>
+    <p>4 rounds, minimal rest: 15 jump squats → 20 walking lunges → 15/leg single-leg calf raises (off a step) → 15 hip bridges → 30 s plank → 10 burpees. Finish with 4 × 20 s stair sprints or high knees if you have space. This is your "limited time, high-impact" travel default.</p>
+  </div>
+</div>
+
+<div class="panel" id="p-recovery">
+  <div class="card warn">
+    <h3>Your #1 limiter is sleep, not training</h3>
+    <p>Oura says: 5 h 56 m average, readiness 51, HRV trending down 90 days, RHR up from 45 → 51. <b>No training plan outruns chronic 6-hour sleep.</b> The single highest-ROI change for sub-4 is averaging 7+ hrs on non-party nights. Aim: in bed by 1:30 AM on weeknights (works with your chronotype), 8+ hrs the two nights after every party weekend.</p>
+  </div>
+  <div class="card">
+    <h3>Morning Oura check → adjust the day</h3>
+    <table><tr><th>Signal</th><th>Action</th></tr>
+    <tr><td>Readiness 70+ / HRV near your norm</td><td>Run the day as written 🟢</td></tr>
+    <tr><td>Readiness 55–70 or RHR +5 bpm</td><td>Keep the mileage, drop the intensity — workout becomes easy run 🟡</td></tr>
+    <tr><td>Readiness &lt; 55, RHR +8, or HRV bottomed out (like your 11 ms on Jul 25)</td><td>Easy 30-min walk or full rest, no exceptions 🔴</td></tr>
+    <tr><td>Two red days in a row, or temp +1°F+</td><td>Rest + reassess — possible illness. Skip the week's workout entirely 🔴</td></tr></table>
+  </div>
+  <div class="card">
+    <h3>The Drinking Protocol (Lolla, Mochakk, North Coast, bday, Dom Dolla…)</h3>
+    <ul>
+      <li><b>Before going out:</b> full dinner with carbs + protein, 500 ml electrolyte drink.</li>
+      <li><b>During:</b> 1 water per drink (non-negotiable — set a phone reminder), avoid sugary mixers late night.</li>
+      <li><b>Before bed:</b> 500–750 ml water + electrolytes, salty snack.</li>
+      <li><b>Next morning:</b> electrolytes first, salty carb-heavy breakfast (eggs + toast + fruit), 30–45 min zone-1 walk — not a run. Your HRV will be suppressed 24–48 hrs; the plan already schedules rest/easy on every morning-after.</li>
+      <li><b>Rule:</b> no hard workout within 36 hrs after a heavy night. Long runs are placed BEFORE party weekends, never the morning after.</li>
+      <li><b>Oct 17 = last big night.</b> After the Oct 16–17 weekend, alcohol costs you real race time (sleep quality, glycogen storage, plasma volume). Two weeks clean before Nov 1.</li>
+    </ul>
+  </div>
+  <div class="card good">
+    <h3>Injury early-warning (act on these, don't push through)</h3>
+    <p>Sharp shin pain that persists into walking, achilles stiffness lasting past the first mile, knee pain that worsens during a run → cut the run, take 2 days off, cross-train (bike/swim). Coming off a low run base into 13 weeks of building, calves/shins are the risk zone — that's why calf raises are in every leg day and mileage builds gradually with cutback weeks.</p>
+    <p><b>Your Strava history says:</b> two twisted ankles (May) → do the band walks + add 30 s/leg single-leg balance daily, it's free. Recurring blisters (Sept, April) → hydrocolloid bandages preemptively on known hot spots before every run 10 mi+, and lock in your sock/shoe combo by Week 8 — race day feet are non-negotiable. Also: the Brooks with support felt "WAY better" per your own April notes — make the shoe decision early and buy a second pair by mid-September so it's broken in for Nov 1.</p>
+  </div>
+</div>
+
+<div class="panel" id="p-race">
+  <div class="card">
+    <h3>Is sub-4 realistic?</h3>
+    <p>Two data sources, two answers. Oura's VO2 max (46) says the engine is worth ~3:50. Strava's estimated 5K (26:32, from training data — you haven't raced one all-out) predicts ~4:15–4:25 <b>today</b>. Both are true: the aerobic ceiling is there, the run-specific fitness isn't yet. That gap is exactly what 13 weeks of volume + actually-easy easy days closes.</p>
+    <p><b>Decision point — Week 9 (Sep 26):</b> if the 16-miler with 4 mi at 9:05–9:15 feels controlled, race for sub-4. If not, target 4:10–4:20 and negative-split — a strong first NYC beats a blowup at mile 20.</p>
+    <p><b>From your Strava history:</b> you were running 4×/week with 6–7.5 mi runs through April — the base is real, July was just thin. Your spring consistency is the template; this plan is that plus structure.</p>
+  </div>
+  <div class="card">
+    <h3>Pace Targets (calibrated from your Strava, Jul 2026)</h3>
+    <table class="paces"><tr><th>Zone</th><th>Pace</th><th>Feel</th></tr>
+    <tr><td>Easy</td><td>10:00–11:00 /mi</td><td>Full-sentence conversation. 80% of your running. Your Strava shows you've been doing "easy" runs at 8:50–9:15 with effort scores of 90+ — that's the tight-legs pattern. Slow down; it's not optional.</td></tr>
+    <tr><td>Marathon (MP)</td><td>9:05–9:15 /mi</td><td>Comfortably strong, could speak short sentences. Sub-4 = 9:09.</td></tr>
+    <tr><td>Threshold / tempo</td><td>8:30–8:50 /mi</td><td>"Comfortably hard," few words at a time (your Strava zone 4)</td></tr>
+    <tr><td>Interval (VO2)</td><td>7:45–8:10 /mi</td><td>Hard — reps of 2–5 min, full recovery jogs</td></tr></table>
+    <div class="note">These tighten as fitness improves — after the Week 9 decision run, ask Claude to re-pull Strava and adjust.</div>
+  </div>
+  <div class="card">
+    <h3>NYC Course Notes</h3>
+    <ul>
+      <li><b>Verrazzano (mi 1–2):</b> biggest climb of the day — go 20–30 s/mi slower than goal. Everyone banks time here and pays at mile 22.</li>
+      <li><b>Brooklyn (mi 3–13):</b> settle into 9:05–9:10, run the tangents, don't surge with the crowd energy.</li>
+      <li><b>Queensboro Bridge (mi 15–16):</b> silent, uphill, brutal. Effort stays even, pace drifts — fine.</li>
+      <li><b>First Ave (mi 16–18):</b> the wall of noise makes everyone sprint. Don't.</li>
+      <li><b>Fifth Ave grind (mi 22–24):</b> long false-flat uphill. This is what all those Bulgarian split squats were for.</li>
+      <li><b>Central Park (mi 24+):</b> rolling. Empty the tank from Columbus Circle.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const RACE = new Date('2026-11-01T09:00:00');
+const PLAN = [
+{n:1,label:"Jul 30 – Aug 2 · Chicago / Lollapalooza",focus:"Kickoff — move a little, survive the fest",miles:"~6 mi",days:[
+{d:"2026-07-30",t:"run",title:"Easy 3 mi — Lakefront Trail",detail:"Morning before the fest. Conversational pace. Welcome to marathon training — it starts with a jog along Lake Michigan.",badge:"🎪 Lolla"},
+{d:"2026-07-31",t:"strength",title:"Hotel circuit (25 min) or 20-min brisk walk",detail:"4 rounds: jump squats, lunges, calf raises, bridges, plank, burpees. Then hydrate all day — 1 water per drink tonight.",badge:"🎪 Lolla"},
+{d:"2026-08-01",t:"rest",title:"Rest — festival day",detail:"You'll walk 15k+ steps anyway. Electrolytes before bed. Salty breakfast tomorrow.",badge:"🎪 Lolla"},
+{d:"2026-08-02",t:"travel",title:"Fly home — recovery walk",detail:"30-min walk when you land. Big dinner, real sleep tonight. The plan starts for real Monday.",badge:"✈️ Home"}]},
+{n:2,label:"Aug 3 – 9 · DC (clean week)",focus:"Base building begins",miles:"~16 mi",days:[
+{d:"2026-08-03",t:"run",title:"Easy 3 mi + 4 strides",detail:"Strides = 20 s smooth accelerations, walk back. Post-Lolla legs, keep it gentle."},
+{d:"2026-08-04",t:"strength",title:"Leg Day A (45 min)",detail:"Bulgarian split squats, SL-RDL, hip thrusts, both calf raises, band work. See Strength tab."},
+{d:"2026-08-05",t:"run",title:"Easy 4 mi",detail:"Early AM before DC heat. Rock Creek or the Mall."},
+{d:"2026-08-06",t:"strength",title:"Upper + Core B, then 20-min walk",detail:"Pull, press, dead bugs, Pallof, side planks."},
+{d:"2026-08-07",t:"run",title:"Easy 3 mi + 4 strides",detail:"Legs should feel better than Monday."},
+{d:"2026-08-08",t:"long",title:"Long run 6 mi",detail:"Slowest pace of the week. Bring water. This is your new longest run in a while — that's the point."},
+{d:"2026-08-09",t:"rest",title:"Rest or 30-min walk",detail:"Full recovery. Meal prep for the week."}]},
+{n:3,label:"Aug 10 – 16 · Cary, NC (mom's bday — no drinking)",focus:"Best training week of the summer — use it",miles:"~20 mi",days:[
+{d:"2026-08-10",t:"rest",title:"Rest or easy 3 mi",detail:"Travel prep. Pack running shoes FIRST."},
+{d:"2026-08-11",t:"run",title:"Easy 4 mi — Cary greenways",detail:"Black Creek or White Oak Creek greenway. Shaded and flat.",badge:"✈️ Cary"},
+{d:"2026-08-12",t:"strength",title:"Leg Day A (gym or garage)",detail:"Dumbbells work for everything. No gym → hotel circuit ×5 rounds.",badge:"Cary"},
+{d:"2026-08-13",t:"workout",title:"Tempo intro: 5 mi w/ 2×8 min comfortably hard",detail:"First quality session. 8:30–8:50 pace or 'can only say a few words.' Jog 3 min between.",badge:"Cary"},
+{d:"2026-08-14",t:"run",title:"Easy 3 mi + short Upper B",detail:"Sleep is great this week with no partying — bank it.",badge:"Cary"},
+{d:"2026-08-15",t:"long",title:"Long run 8 mi",detail:"Early AM. Take a gel at minute 40 just to practice, 500 ml fluids.",badge:"Cary"},
+{d:"2026-08-16",t:"travel",title:"Back to DC — rest",detail:"Great week. This is what a clean block feels like — remember it.",badge:"✈️ Home"}]},
+{n:4,label:"Aug 17 – 23 · DC + wedding Sat",focus:"First VO2 work; long run BEFORE the wedding",miles:"~21 mi",days:[
+{d:"2026-08-17",t:"run",title:"Easy 4 mi + 4 strides",detail:""},
+{d:"2026-08-18",t:"strength",title:"Leg Day A",detail:""},
+{d:"2026-08-19",t:"workout",title:"VO2: 5×3 min hard / 2 min jog (≈5 mi total)",detail:"7:45–8:10 pace or 'hard but repeatable.' This is what pushes 46 → 50. Warm up 10 min first. Like your Jul 8 4×4s, but with the jog recovery honest."},
+{d:"2026-08-20",t:"run",title:"Easy 3 mi + Upper B",detail:""},
+{d:"2026-08-21",t:"long",title:"Long run 9 mi (morning)",detail:"Moved to Friday so the wedding costs you nothing. Gel at 40 min, electrolytes after."},
+{d:"2026-08-22",t:"rest",title:"Wedding 🥂 — full rest",detail:"Drinking protocol: dinner first, 1:1 water, electrolytes before bed."},
+{d:"2026-08-23",t:"rest",title:"Recovery walk 30–45 min",detail:"Zone 1 only. Salty breakfast, rehydrate, early night — HRV needs 24–48 hrs."}]},
+{n:5,label:"Aug 24 – 30 · DC → NYC (Mochakk Fri/Sat)",focus:"Long run midweek, party weekend costs nothing",miles:"~17 mi",days:[
+{d:"2026-08-24",t:"run",title:"Easy 4 mi + strides",detail:""},
+{d:"2026-08-25",t:"strength",title:"Leg Day A",detail:""},
+{d:"2026-08-26",t:"long",title:"Long run 10 mi (early AM)",detail:"Double-digit club. Gels at 40 and 75 min. Slow is smart."},
+{d:"2026-08-27",t:"travel",title:"Travel to NYC — rest or 20-min mobility",detail:"Legs recover while you sit on the train/bus.",badge:"✈️ NYC"},
+{d:"2026-08-28",t:"run",title:"Easy 3 mi — West Side Highway or Central Park",detail:"Shakeout AM. Mochakk night 1 — protocol on.",badge:"🎧 Mochakk"},
+{d:"2026-08-29",t:"rest",title:"Rest — Mochakk @ K Bridge Park",detail:"Hydrate all day. It's an outdoor day show — sunscreen + electrolytes.",badge:"🎧 Mochakk"},
+{d:"2026-08-30",t:"travel",title:"Home — recovery walk only",detail:"Two party nights = 48-hr recovery window starts now.",badge:"✈️ Home"}]},
+{n:6,label:"Aug 31 – Sep 6 · DC → Chicago (North Coast Sep 3–7)",focus:"Front-load the week, cruise the fest",miles:"~19 mi",days:[
+{d:"2026-08-31",t:"workout",title:"Tempo: 5 mi w/ 20 min continuous @ 8:30–8:50",detail:"HRV may still be meh from NYC — if Oura is red, swap with tomorrow."},
+{d:"2026-09-01",t:"strength",title:"Leg Day A",detail:""},
+{d:"2026-09-02",t:"long",title:"Long run 11 mi (early AM)",detail:"Done before Chicago. Fuel properly: breakfast 2 hrs before, 2 gels."},
+{d:"2026-09-03",t:"travel",title:"Fly to Chicago — rest",detail:"",badge:"✈️ Chicago"},
+{d:"2026-09-04",t:"run",title:"Easy 3 mi Lakefront AM",detail:"Before the fest. Then protocol: 1:1 water, electrolytes.",badge:"🎪 North Coast"},
+{d:"2026-09-05",t:"rest",title:"Rest — fest day",detail:"Walk, hydrate, salty food.",badge:"🎪 North Coast"},
+{d:"2026-09-06",t:"rest",title:"Rest — fest day",detail:"Last night — tomorrow you fly home and reset.",badge:"🎪 North Coast"}]},
+{n:7,label:"Sep 7 – 13 · Home + BIRTHDAY 🎂 (Thu–Sat)",focus:"Recover, celebrate, sneak in a Sunday long run",miles:"~22 mi",days:[
+{d:"2026-09-07",t:"travel",title:"Fly home — rest",detail:"Labor Day. Sleep 8+ tonight, you're 3 nights in the hole.",badge:"✈️ Home"},
+{d:"2026-09-08",t:"run",title:"Easy 4 mi + strides",detail:"Shake off the fest."},
+{d:"2026-09-09",t:"strength",title:"Leg Day A + easy 3 mi",detail:"Bank work before the birthday stretch."},
+{d:"2026-09-10",t:"run",title:"🎂 Birthday — easy 3 mi shakeout AM (optional)",detail:"22 laps around the sun, 3 miles before the chaos. Protocol on tonight.",badge:"🎉 Bday"},
+{d:"2026-09-11",t:"rest",title:"Rest — bday round 2",detail:"NYC or DC — either way, 1:1 water and electrolytes.",badge:"🎉 Bday"},
+{d:"2026-09-12",t:"rest",title:"Rest / long walk",detail:"Hydrate hard today — tomorrow matters.",badge:"🎉 Bday"},
+{d:"2026-09-13",t:"long",title:"Long run 12 mi (afternoon OK)",detail:"Sleep in, big salty breakfast, run at 4–5 PM when you feel human. Easy pace only. If Oura is deep red, push to Mon AM instead."}]},
+{n:8,label:"Sep 14 – 20 · DC (clean week)",focus:"BUILD — first MP work, race fueling practice starts",miles:"~27 mi",days:[
+{d:"2026-09-14",t:"rest",title:"Rest or 30-min recovery walk",detail:""},
+{d:"2026-09-15",t:"workout",title:"VO2: 6×800 m hard / 2-min jog (≈5 mi)",detail:"7:45–8:10 pace. Track or flat path. Warm up 10 min."},
+{d:"2026-09-16",t:"strength",title:"Leg Day A",detail:""},
+{d:"2026-09-17",t:"run",title:"Easy 5 mi",detail:""},
+{d:"2026-09-18",t:"run",title:"Easy 3 mi + Upper B",detail:""},
+{d:"2026-09-19",t:"long",title:"Long run 14 mi — last 3 @ MP (9:05–9:15)",detail:"FULL race fueling rehearsal: exact gels, exact timing, race breakfast. How MP feels at mile 11 is real data."},
+{d:"2026-09-20",t:"rest",title:"Rest / walk",detail:""}]},
+{n:9,label:"Sep 21 – 27 · DC (clean week)",focus:"PEAK BUILD + sub-4 decision run",miles:"~34 mi",days:[
+{d:"2026-09-21",t:"run",title:"Easy 4 mi",detail:""},
+{d:"2026-09-22",t:"workout",title:"Threshold: 6 mi w/ 2×15 min @ 8:30–8:50",detail:"3-min jog between. Biggest tempo of the block."},
+{d:"2026-09-23",t:"strength",title:"Leg Day A",detail:""},
+{d:"2026-09-24",t:"run",title:"Easy 5 mi + strides",detail:""},
+{d:"2026-09-25",t:"rest",title:"Rest",detail:"Early night. Tomorrow is the decision run."},
+{d:"2026-09-26",t:"long",title:"⭐ Long run 16 mi — 4 @ MP. THE DECISION RUN",detail:"Full fueling. If miles 11–15 at 9:05–9:15 feel controlled → race sub-4. If it's a grind → 4:10–4:20 plan, and that's a win too. Tell Claude how it went and I'll re-pull Strava to set final race pace."},
+{d:"2026-09-27",t:"run",title:"Recovery 3 mi or walk",detail:""}]},
+{n:10,label:"Sep 28 – Oct 4 · DC → NYC (Dom Dolla Sat)",focus:"Planned cutback — travel week IS the recovery week",miles:"~25 mi",days:[
+{d:"2026-09-28",t:"rest",title:"Rest",detail:""},
+{d:"2026-09-29",t:"workout",title:"VO2: 5×1000 m / 2:30 jog (≈5.5 mi)",detail:""},
+{d:"2026-09-30",t:"strength",title:"Leg Day A",detail:""},
+{d:"2026-10-01",t:"long",title:"Long run 12 mi (early AM)",detail:"Cutback distance, done before NYC. Practice fueling anyway."},
+{d:"2026-10-02",t:"travel",title:"Travel to NYC — easy 3 mi or rest",detail:"",badge:"✈️ NYC"},
+{d:"2026-10-03",t:"rest",title:"Dom Dolla @ Flushing Meadows 🎧",detail:"3 PM–10 PM outdoor show. Protocol on. Done by curfew = decent sleep possible, take it.",badge:"🎧 Dom Dolla"},
+{d:"2026-10-04",t:"travel",title:"Home — 30-min walk",detail:"4 weeks to race day. The serious block starts tomorrow.",badge:"✈️ Home"}]},
+{n:11,label:"Oct 5 – 11 · DC · PEAK WEEK",focus:"Biggest week of the block — protect sleep like it's your job",miles:"~36 mi",days:[
+{d:"2026-10-05",t:"run",title:"Easy 4 mi",detail:""},
+{d:"2026-10-06",t:"workout",title:"Threshold: 6 mi w/ 25 min continuous @ 8:30–8:50",detail:""},
+{d:"2026-10-07",t:"strength",title:"Leg Day A — LAST heavy session",detail:"After today, strength is maintenance only. The gains are banked."},
+{d:"2026-10-08",t:"run",title:"Easy 5 mi",detail:""},
+{d:"2026-10-09",t:"rest",title:"Rest",detail:"Carbs up tonight for tomorrow."},
+{d:"2026-10-10",t:"long",title:"⭐ Long run 18 mi — 6 @ MP",detail:"Longest run of the block. Full race rehearsal: breakfast, kit, gels every 35–40 min. Miles 12–18 are where marathons are made."},
+{d:"2026-10-11",t:"run",title:"Recovery 3 mi or long walk",detail:"Peak week done. Everything from here is sharpening."}]},
+{n:12,label:"Oct 12 – 18 · DC · Taper begins",focus:"Volume drops, intensity stays. Last drinking weekend.",miles:"~26 mi",days:[
+{d:"2026-10-12",t:"run",title:"Easy 4 mi",detail:""},
+{d:"2026-10-13",t:"workout",title:"4×800 m @ 10K effort (≈4.5 mi)",detail:"Staying sharp, not building."},
+{d:"2026-10-14",t:"strength",title:"Maintenance: bodyweight legs + core (30 min)",detail:"Light. No soreness allowed from here on."},
+{d:"2026-10-15",t:"run",title:"Easy 4 mi",detail:""},
+{d:"2026-10-16",t:"rest",title:"Rest",detail:""},
+{d:"2026-10-17",t:"long",title:"Long run 12 mi — 4 @ MP",detail:"🍺 LAST CALL: if you're going out, tonight's the final one. After this weekend: dry until Nov 1."},
+{d:"2026-10-18",t:"rest",title:"Walk / rest",detail:"Two clean weeks start now. Sleep becomes your superpower."}]},
+{n:13,label:"Oct 19 – 25 · DC · Taper 2 (dry)",focus:"Fresh legs loading…",miles:"~19 mi",days:[
+{d:"2026-10-19",t:"run",title:"Easy 3 mi + 4 strides",detail:""},
+{d:"2026-10-20",t:"workout",title:"3×1 mi @ MP (9:05–9:15), 2-min jog",detail:"Should feel almost easy now. That's the taper working."},
+{d:"2026-10-21",t:"strength",title:"Light core + mobility (20 min)",detail:""},
+{d:"2026-10-22",t:"run",title:"Easy 4 mi",detail:""},
+{d:"2026-10-23",t:"rest",title:"Rest",detail:""},
+{d:"2026-10-24",t:"long",title:"Long run 8 mi easy",detail:"Last real long run. Enjoy it."},
+{d:"2026-10-25",t:"rest",title:"Rest",detail:"One week. Start hydrating deliberately every day now."}]},
+{n:14,label:"Oct 26 – Nov 1 · RACE WEEK 🗽",focus:"Do less than feels right. Carbs Thu–Sat. Sleep Thu/Fri matters most.",miles:"~10 mi + 26.2",days:[
+{d:"2026-10-26",t:"run",title:"Easy 3 mi",detail:""},
+{d:"2026-10-27",t:"workout",title:"2 mi easy + 4×1 min @ MP",detail:"Final tune. Legs should feel bouncy."},
+{d:"2026-10-28",t:"rest",title:"Rest",detail:"Sleep 8+. The night-before-the-night-before is the sleep that counts — actually it's tonight through Friday."},
+{d:"2026-10-29",t:"run",title:"Easy 2 mi + strides · CARB LOAD begins",detail:"530–670 g carbs/day today through Saturday. White rice, bagels, pasta, juice, pretzels."},
+{d:"2026-10-30",t:"travel",title:"Travel to NYC — rest, carbs, water",detail:"Expo today or tomorrow AM. Lay out full kit. Zero alcohol, obviously.",badge:"✈️ NYC"},
+{d:"2026-10-31",t:"run",title:"15-min shakeout + 4 strides",detail:"Halloween in NYC and you're in bed by 9:30. Alarm set, kit laid out, gels counted, bib pinned."},
+{d:"2026-11-01",t:"long",title:"🏁 NYC MARATHON — 26.2",detail:"Breakfast 3 hrs out (100–120 g carbs). Easy over the Verrazzano, patient through Brooklyn, even effort on Queensboro, calm on First Ave, fight on Fifth Ave, fly through the Park. See you at the finish."}]}
+];
+
+const $ = s => document.querySelector(s);
+const done = JSON.parse(localStorage.getItem('mtDone')||'{}');
+const todayStr = () => { const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
+
+// countdown + progress
+const days = Math.max(0, Math.ceil((RACE - new Date())/86400000));
+$('#countdown').textContent = days + ' days to race day';
+const allDays = PLAN.flatMap(w=>w.days);
+const doneCount = allDays.filter(d=>done[d.d]).length;
+$('#progbar').style.width = Math.round(100*doneCount/allDays.length)+'%';
+$('#progtext').textContent = doneCount + ' / ' + allDays.length + ' sessions done';
+
+// tabs
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active'); $('#p-'+t.dataset.p).classList.add('active');
+}));
+
+function dayRow(day, wn){
+  const div=document.createElement('div');
+  div.className='day'+(done[day.d]?' done':'')+(day.d===todayStr()?' today-row':'');
+  const dt=new Date(day.d+'T12:00:00');
+  const lbl=dt.toLocaleDateString('en-US',{weekday:'short',month:'numeric',day:'numeric'});
+  div.innerHTML='<input type="checkbox" class="dcheck"'+(done[day.d]?' checked':'')+'>'+
+    '<div class="ddate">'+lbl+'</div>'+
+    '<div><span class="pill '+day.t+'">'+({run:'RUN',long:'LONG RUN',workout:'WORKOUT',strength:'STRENGTH',rest:'REST',travel:'TRAVEL'})[day.t]+'</span>'+
+    (day.badge?'<span class="pill travel">'+day.badge+'</span>':'')+
+    '<div class="dtitle">'+day.title+'</div>'+
+    (day.detail?'<div class="ddetail">'+day.detail+'</div>':'')+'</div>';
+  div.querySelector('.dcheck').addEventListener('change',e=>{
+    if(e.target.checked) done[day.d]=1; else delete done[day.d];
+    localStorage.setItem('mtDone',JSON.stringify(done));
+    div.classList.toggle('done',e.target.checked);
+    const dc=allDays.filter(d=>done[d.d]).length;
+    $('#progbar').style.width=Math.round(100*dc/allDays.length)+'%';
+    $('#progtext').textContent=dc+' / '+allDays.length+' sessions done';
+  });
+  return div;
+}
+
+// plan render
+const weeksEl=$('#weeks');
+const ts=todayStr();
+PLAN.forEach(w=>{
+  const el=document.createElement('div'); el.className='week';
+  const isCurrent=w.days.some(d=>d.d===ts)|| (w.days[0].d<=ts && w.days[w.days.length-1].d>=ts);
+  if(isCurrent) el.classList.add('open');
+  el.innerHTML='<div class="week-head"><div><div class="wtitle">Week '+w.n+' · '+w.label+'</div><div class="wmeta">'+w.focus+' · '+w.miles+'</div></div><div>▾</div></div><div class="week-body"></div>';
+  const body=el.querySelector('.week-body');
+  w.days.forEach(d=>body.appendChild(dayRow(d,w.n)));
+  el.querySelector('.week-head').addEventListener('click',()=>el.classList.toggle('open'));
+  weeksEl.appendChild(el);
+});
+
+// today panel
+const tEl=$('#todayContent');
+let todayDay=null, todayWeek=null, nextDay=null;
+for(const w of PLAN){ for(const d of w.days){ if(d.d===ts){todayDay=d;todayWeek=w;} if(!nextDay && d.d>ts){nextDay=d;} } }
+function bigCard(day, week, heading){
+  const dt=new Date(day.d+'T12:00:00');
+  return '<div class="card today-card"><h2>'+heading+' — '+dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'</h2>'+
+  '<span class="pill '+day.t+'">'+({run:'RUN',long:'LONG RUN',workout:'WORKOUT',strength:'STRENGTH',rest:'REST',travel:'TRAVEL'})[day.t]+'</span>'+
+  (day.badge?'<span class="pill travel">'+day.badge+'</span>':'')+
+  '<div style="font-size:17px;font-weight:700;margin:8px 0 4px;">'+day.title+'</div>'+
+  (day.detail?'<p>'+day.detail+'</p>':'')+
+  (week?'<div class="note" style="margin-top:10px;">Week '+week.n+': '+week.focus+' · '+week.miles+' this week</div>':'')+'</div>';
+}
+let html='';
+if(todayDay){ html+=bigCard(todayDay,todayWeek,'Today'); }
+else if(ts<'2026-07-30'){ html+='<div class="card"><p>Plan starts Thursday, July 30.</p></div>'; }
+else if(ts>'2026-11-01'){ html+='<div class="card"><h3>🏅 It\'s done.</h3><p>However Nov 1 went — you trained for and ran the NYC Marathon at 22. Tell Claude your finish time.</p></div>'; }
+if(nextDay && todayDay){ html+=bigCard(nextDay,null,'Up next'); }
+html+='<div class="card"><h3>Every morning (2 min)</h3><p>1) Check Oura readiness → green/yellow/red rules in the Recovery tab. 2) Do today\'s session (or its downgrade). 3) Check it off in the Plan tab.</p></div>';
+html+='<div class="note">💬 To change anything, just tell Claude: "swap Tuesday and Wednesday," "I missed this week — rebuild it," "recalibrate my paces from Strava," "the 16-miler felt great — lock in sub-4 pacing."</div>';
+tEl.innerHTML=html;
+</script>
+</body>
+</html>
