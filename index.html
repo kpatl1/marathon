@@ -41,6 +41,11 @@
   .ddate { width:64px; flex-shrink:0; font-size:12px; color:var(--muted); font-weight:600; padding-top:2px; }
   .dtitle { font-size:13.5px; font-weight:600; }
   .ddetail { font-size:12.5px; color:var(--muted); margin-top:2px; line-height:1.45; }
+  .dactual { font-size:12.5px; color:#065f46; font-weight:600; margin-top:3px; }
+  .statgrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; }
+  .stat { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; }
+  .stat .v { font-size:20px; font-weight:700; letter-spacing:-0.02em; }
+  .stat .l { font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); margin-top:2px; }
   .prog { height:6px; background:var(--line); border-radius:3px; margin-top:10px; overflow:hidden; }
   .prog > div { height:100%; background:var(--run); border-radius:3px; }
   table { width:100%; border-collapse:collapse; font-size:13px; }
@@ -64,6 +69,7 @@
 <div class="tabs">
   <button class="tab active" data-p="today">Today</button>
   <button class="tab" data-p="plan">Training Plan</button>
+  <button class="tab" data-p="stats">Stats</button>
   <button class="tab" data-p="nutrition">Nutrition</button>
   <button class="tab" data-p="strength">Strength</button>
   <button class="tab" data-p="recovery">Recovery & Alcohol</button>
@@ -75,6 +81,10 @@
 <div class="panel" id="p-plan">
   <div class="note">Tap a week to expand. Check off days as you go — progress saves on this device. Ask Claude to modify anything ("move my Week 8 long run to Sunday", "recalibrate paces from Strava") and this page gets updated.</div>
   <div id="weeks"></div>
+</div>
+
+<div class="panel" id="p-stats">
+  <div id="statsContent"></div>
 </div>
 
 <div class="panel" id="p-nutrition">
@@ -302,8 +312,16 @@ const PLAN = [
 {d:"2026-11-01",t:"long",title:"🏁 NYC MARATHON — 26.2",detail:"Breakfast 3 hrs out (100–120 g carbs). Easy over the Verrazzano, patient through Brooklyn, even effort on Queensboro, calm on First Ave, fight on Fifth Ave, fly through the Park. See you at the finish."}]}
 ];
 
+// ── Actuals synced from Strava (last sync: Aug 3, 2026) ──
+const LAST_SYNC = 'Aug 3, 2026';
+const ACTUALS = {
+'2026-08-03': {name:'Costco 4 miler again', mi:4.53, sec:2568, time:'42:48', pace:'9:27', elev:98, cal:488, effort:116, cadence:142, prs:5, note:'Post-Lolla chill run · 6 achievements, 5 PRs'}
+};
+// Sessions confirmed complete (Lolla rest/travel days + Strava-logged runs). Checked automatically; you can still uncheck.
+const SEED_DONE = {'2026-07-30':1,'2026-08-01':1,'2026-08-02':1,'2026-08-03':1};
+
 const $ = s => document.querySelector(s);
-const done = JSON.parse(localStorage.getItem('mtDone')||'{}');
+const done = Object.assign({}, SEED_DONE, JSON.parse(localStorage.getItem('mtDone')||'{}'));
 const todayStr = () => { const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
 
 // countdown + progress
@@ -326,14 +344,16 @@ function dayRow(day, wn){
   div.className='day'+(done[day.d]?' done':'')+(day.d===todayStr()?' today-row':'');
   const dt=new Date(day.d+'T12:00:00');
   const lbl=dt.toLocaleDateString('en-US',{weekday:'short',month:'numeric',day:'numeric'});
+  const a=ACTUALS[day.d];
   div.innerHTML='<input type="checkbox" class="dcheck"'+(done[day.d]?' checked':'')+'>'+
     '<div class="ddate">'+lbl+'</div>'+
     '<div><span class="pill '+day.t+'">'+({run:'RUN',long:'LONG RUN',workout:'WORKOUT',strength:'STRENGTH',rest:'REST',travel:'TRAVEL'})[day.t]+'</span>'+
     (day.badge?'<span class="pill travel">'+day.badge+'</span>':'')+
     '<div class="dtitle">'+day.title+'</div>'+
-    (day.detail?'<div class="ddetail">'+day.detail+'</div>':'')+'</div>';
+    (day.detail?'<div class="ddetail">'+day.detail+'</div>':'')+
+    (a?'<div class="dactual">✅ Strava: '+a.mi+' mi · '+a.time+' · '+a.pace+'/mi · RE '+a.effort+'</div>':'')+'</div>';
   div.querySelector('.dcheck').addEventListener('change',e=>{
-    if(e.target.checked) done[day.d]=1; else delete done[day.d];
+    if(e.target.checked) done[day.d]=1; else done[day.d]=0;
     localStorage.setItem('mtDone',JSON.stringify(done));
     div.classList.toggle('done',e.target.checked);
     const dc=allDays.filter(d=>done[d.d]).length;
@@ -357,17 +377,51 @@ PLAN.forEach(w=>{
   weeksEl.appendChild(el);
 });
 
+// stats panel
+(function(){
+  const sEl=$('#statsContent');
+  let totMi=0, totSec=0, rows='';
+  for(const w of PLAN){ for(const d of w.days){ const a=ACTUALS[d.d]; if(!a) continue;
+    totMi+=a.mi; totSec+=a.sec;
+    const dt=new Date(d.d+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+    rows+='<tr><td>'+dt+'</td><td><b>'+a.name+'</b><div class="ddetail">Planned: '+d.title+(a.note?' · '+a.note:'')+'</div></td><td>'+a.mi+' mi</td><td>'+a.time+'</td><td>'+a.pace+'/mi</td><td>'+a.effort+'</td></tr>';
+  }}
+  const avg=totMi?Math.round(totSec/totMi):0;
+  const avgStr=totMi?Math.floor(avg/60)+':'+String(avg%60).padStart(2,'0'):'—';
+  const dc=allDays.filter(d=>done[d.d]).length;
+  let shtml='<div class="statgrid">'+
+    '<div class="stat"><div class="v">'+totMi.toFixed(1)+' mi</div><div class="l">Miles logged (plan)</div></div>'+
+    '<div class="stat"><div class="v">'+avgStr+'/mi</div><div class="l">Avg pace</div></div>'+
+    '<div class="stat"><div class="v">'+dc+' / '+allDays.length+'</div><div class="l">Sessions done</div></div>'+
+    '<div class="stat"><div class="v">'+days+'</div><div class="l">Days to race</div></div>'+
+  '</div>';
+  shtml+='<div class="card" style="margin-top:12px;"><h3>Runs logged since plan start</h3>'+
+    (rows?'<table><tr><th>Date</th><th>Run</th><th>Dist</th><th>Time</th><th>Pace</th><th>Effort</th></tr>'+rows+'</table>':'<p>No runs logged yet.</p>')+
+    '<div class="note">Synced from Strava · last sync '+LAST_SYNC+'. Ask Claude to "sync my Strava runs" anytime to refresh this page.</div></div>';
+  shtml+='<div class="card warn"><h3>Coach\'s read — Aug 3</h3>'+
+    '<p>Day 1 done: 4.5 mi at <b>9:27/mi</b> with relative effort <b>116</b> — highest of any run this summer. The plan called for 10:00–11:00/mi on post-Lolla legs; 9:27 on suppressed HRV is exactly the too-fast-easy pattern flagged in the Race tab. The mileage banked is real, just make Wednesday\'s 4-miler an honest 10:00+. Easy days easy = hard days count.</p></div>';
+  shtml+='<div class="card"><h3>July context (pre-plan)</h3>'+
+    '<table><tr><th>Date</th><th>Run</th><th>Dist</th><th>Pace</th><th>Effort</th></tr>'+
+    '<tr><td>Jul 22</td><td>HOLY HUMID (Cary)</td><td>3.03 mi</td><td>9:48/mi</td><td>99</td></tr>'+
+    '<tr><td>Jul 8</td><td>4×4s intervals</td><td>3.41 mi</td><td>8:12/mi</td><td>74</td></tr>'+
+    '<tr><td>Jul 6</td><td>Nonchalant Weekday Run</td><td>3.23 mi</td><td>9:20/mi</td><td>79</td></tr></table>'+
+    '<div class="note">July total: ~9.7 run miles — thin, as expected. The base rebuild starts now.</div></div>';
+  sEl.innerHTML=shtml;
+})();
+
 // today panel
 const tEl=$('#todayContent');
 let todayDay=null, todayWeek=null, nextDay=null;
 for(const w of PLAN){ for(const d of w.days){ if(d.d===ts){todayDay=d;todayWeek=w;} if(!nextDay && d.d>ts){nextDay=d;} } }
 function bigCard(day, week, heading){
   const dt=new Date(day.d+'T12:00:00');
+  const a=ACTUALS[day.d];
   return '<div class="card today-card"><h2>'+heading+' — '+dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'</h2>'+
   '<span class="pill '+day.t+'">'+({run:'RUN',long:'LONG RUN',workout:'WORKOUT',strength:'STRENGTH',rest:'REST',travel:'TRAVEL'})[day.t]+'</span>'+
   (day.badge?'<span class="pill travel">'+day.badge+'</span>':'')+
   '<div style="font-size:17px;font-weight:700;margin:8px 0 4px;">'+day.title+'</div>'+
   (day.detail?'<p>'+day.detail+'</p>':'')+
+  (a?'<div class="dactual">✅ Done — Strava: '+a.mi+' mi · '+a.time+' · '+a.pace+'/mi · RE '+a.effort+'</div>':'')+
   (week?'<div class="note" style="margin-top:10px;">Week '+week.n+': '+week.focus+' · '+week.miles+' this week</div>':'')+'</div>';
 }
 let html='';
