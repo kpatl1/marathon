@@ -213,11 +213,11 @@ const PLAN = [
 {d:"2026-08-02",t:"travel",title:"Fly home — recovery walk",detail:"30-min walk when you land. Big dinner, real sleep tonight. The plan starts for real Monday.",badge:"✈️ Home"}]},
 {n:2,label:"Aug 3 – 9 · DC (clean week)",focus:"Base building begins",miles:"~16 mi",days:[
 {d:"2026-08-03",t:"run",title:"Easy 4 mi — Costco run 🛒",detail:"Your pick, and 4 easy works. Post-Lolla legs + likely suppressed HRV: keep it truly easy (10:00–11:00/mi), hydrate before you go. Last time you ran to Costco you bought nothing — break the streak."},
-{d:"2026-08-04",t:"strength",title:"Leg Day A (45 min)",detail:"Bulgarian split squats, SL-RDL, hip thrusts, both calf raises, band work. See Strength tab."},
-{d:"2026-08-05",t:"run",title:"Easy 4 mi",detail:"Early AM before DC heat. Rock Creek or the Mall."},
-{d:"2026-08-06",t:"strength",title:"Upper + Core B, then 20-min walk",detail:"Pull, press, dead bugs, Pallof, side planks."},
-{d:"2026-08-07",t:"run",title:"Easy 3 mi + 4 strides",detail:"Legs should feel better than Monday."},
-{d:"2026-08-08",t:"long",title:"Long run 6 mi",detail:"Slowest pace of the week. Bring water. This is your new longest run in a while — that's the point."},
+{d:"2026-08-04",t:"strength",title:"Leg Day A (45 min)",detail:"Bulgarian split squats, SL-RDL, hip thrusts, both calf raises, band work. See Strength tab. Calves cramped mid-session — ease load next time and hydrate more beforehand."},
+{d:"2026-08-05",t:"run",title:"Easy 4 mi",detail:"Early AM before DC heat. Rock Creek or the Mall. Brutal heat/humidity/construction — 10:35/mi anyway, right in the easy zone. That's the win, not the mileage."},
+{d:"2026-08-06",t:"strength",title:"Upper + Core B, then 20-min walk",detail:"Pull, press, dead bugs, Pallof, side planks. Logged just after midnight — counts."},
+{d:"2026-08-07",t:"rest",title:"Rest — planned run skipped",detail:"No stress, one skipped easy run doesn't move the needle. Back on it today."},
+{d:"2026-08-08",t:"long",title:"Long run 6 mi",detail:"Slowest pace of the week. Bring water. This is your new longest run in a while — that's the point. Nailed it at 11:08/mi — exactly the long-run pace target."},
 {d:"2026-08-09",t:"rest",title:"Rest or 30-min walk",detail:"Full recovery. Meal prep for the week."}]},
 {n:3,label:"Aug 10 – 16 · Cary, NC (mom's bday — no drinking)",focus:"Best training week of the summer — use it",miles:"~20 mi",days:[
 {d:"2026-08-10",t:"rest",title:"Rest or easy 3 mi",detail:"Travel prep. Pack running shoes FIRST."},
@@ -317,13 +317,15 @@ const PLAN = [
 {d:"2026-11-01",t:"long",title:"🏁 NYC MARATHON — 26.2",detail:"Breakfast 3 hrs out (100–120 g carbs). Easy over the Verrazzano, patient through Brooklyn, even effort on Queensboro, calm on First Ave, fight on Fifth Ave, fly through the Park. See you at the finish."}]}
 ];
 
-// ── Actuals synced from Strava (last sync: Aug 3, 2026) ──
-const LAST_SYNC = 'Aug 3, 2026';
+// ── Actuals synced from Strava (last sync: Aug 8, 2026) ──
+const LAST_SYNC = 'Aug 8, 2026';
 const ACTUALS = {
-'2026-08-03': {name:'Costco 4 miler again', mi:4.53, sec:2568, time:'42:48', pace:'9:27', elev:98, cal:488, effort:116, cadence:142, prs:5, note:'Post-Lolla chill run · 6 achievements, 5 PRs'}
+'2026-08-03': {name:'Costco 4 miler again', mi:4.53, sec:2568, time:'42:48', pace:'9:27', elev:98, cal:488, effort:116, cadence:142, prs:5, note:'Post-Lolla chill run · 6 achievements, 5 PRs'},
+'2026-08-05': {name:'Genuinely might be the worst run of my life', mi:3.40, sec:2162, time:'36:02', pace:'10:35', elev:98, cal:395, effort:107, cadence:142, prs:2, note:'Brutal heat/humidity — but pace landed right in the easy zone'},
+'2026-08-08': {name:'6 at long run pace', mi:6.03, sec:4029, time:'1:07:09', pace:'11:08', elev:161, cal:735, effort:231, cadence:142, prs:17, note:'First real long run — hot day, high effort score, but pace was exactly on target'}
 };
-// Sessions confirmed complete (Lolla rest/travel days + Strava-logged runs). Checked automatically; you can still uncheck.
-const SEED_DONE = {'2026-07-30':1,'2026-08-01':1,'2026-08-02':1,'2026-08-03':1};
+// Sessions confirmed complete (Lolla rest/travel days + Strava-logged runs, strength days). Checked automatically; you can still uncheck.
+const SEED_DONE = {'2026-07-30':1,'2026-08-01':1,'2026-08-02':1,'2026-08-03':1,'2026-08-04':1,'2026-08-05':1,'2026-08-06':1,'2026-08-07':1,'2026-08-08':1};
 
 const $ = s => document.querySelector(s);
 const done = Object.assign({}, SEED_DONE, JSON.parse(localStorage.getItem('mtDone')||'{}'));
@@ -403,8 +405,8 @@ PLAN.forEach(w=>{
   shtml+='<div class="card" style="margin-top:12px;"><h3>Runs logged since plan start</h3>'+
     (rows?'<table><tr><th>Date</th><th>Run</th><th>Dist</th><th>Time</th><th>Pace</th><th>Effort</th></tr>'+rows+'</table>':'<p>No runs logged yet.</p>')+
     '<div class="note">Synced from Strava · last sync '+LAST_SYNC+'. Ask Claude to "sync my Strava runs" anytime to refresh this page.</div></div>';
-  shtml+='<div class="card warn"><h3>Coach\'s read — Aug 3</h3>'+
-    '<p>Day 1 done: 4.5 mi at <b>9:27/mi</b> with relative effort <b>116</b> — highest of any run this summer. The plan called for 10:00–11:00/mi on post-Lolla legs; 9:27 on suppressed HRV is exactly the too-fast-easy pattern flagged in the Race tab. The mileage banked is real, just make Wednesday\'s 4-miler an honest 10:00+. Easy days easy = hard days count.</p></div>';
+  shtml+='<div class="card good"><h3>Coach\'s read — Aug 8</h3>'+
+    '<p>Week 2 in the books: Costco run (Aug 3, 9:27/mi) ran hot as flagged, but then two straight wins — Aug 5\'s miserable heat/humidity/construction run still landed at <b>10:35/mi</b>, and today\'s first real long run came in at <b>11:08/mi</b> for 6 mi, dead center of the 10:00–11:15 long-run target. That\'s the pattern to keep: slow down and the paces sort themselves out. High effort scores (107, 231) this week are heat and duration talking, not pace violations — DC in August is brutal, that\'s expected. Leg Day A done, calves cramped mid-set — watch hydration before lifting. One planned run (Aug 7) skipped for rest, no issue, one skip doesn\'t dent a 13-week build.</p></div>';
   shtml+='<div class="card"><h3>July context (pre-plan)</h3>'+
     '<table><tr><th>Date</th><th>Run</th><th>Dist</th><th>Pace</th><th>Effort</th></tr>'+
     '<tr><td>Jul 22</td><td>HOLY HUMID (Cary)</td><td>3.03 mi</td><td>9:48/mi</td><td>99</td></tr>'+
