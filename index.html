@@ -222,7 +222,7 @@ const PLAN = [
 {n:3,label:"Aug 10 – 16 · DC (clean week — Cary trip cancelled)",focus:"No travel, no drinking = best training week yet. Use it.",miles:"~21 mi",days:[
 {d:"2026-08-10",t:"run",title:"Easy 3 mi + 4 strides",detail:"No travel prep needed now — get a real run in. Strides = 20 s smooth accelerations, walk back. Done at 10:27/mi with effort 49 — best-executed easy day of the block so far."},
 {d:"2026-08-11",t:"strength",title:"Chest & Back (swapped in for easy 4 mi)",detail:"Lifted instead of running — fine, week rebalanced around it. Lat pulldown at 90 kg (not lbs) fried the lats, so Friday's Upper B is cancelled; upper body gets the week off to recover."},
-{d:"2026-08-12",t:"run",title:"Easy 4 mi — makeup run",detail:"Yesterday's run moved here. Legs are fresh (yesterday was upper only), so this sets up tomorrow's tempo. Same feel as Monday: 10:00–11:00/mi. Pulling is off-limits — no pull-ups, no rows."},
+{d:"2026-08-12",t:"run",title:"Easy 4 mi — makeup run",detail:"Yesterday's run moved here. Legs are fresh (yesterday was upper only), so this sets up tomorrow's tempo. Same feel as Monday: 10:00–11:00/mi. Pulling is off-limits — no pull-ups, no rows. Done on the Arlington trails at 10:26/mi."},
 {d:"2026-08-13",t:"workout",title:"Tempo intro: 5 mi w/ 2×8 min comfortably hard",detail:"⭐ Key session of the week, now on fresh legs. 8:30–8:50 pace or 'can only say a few words.' Jog 3 min between. Warm up 10 min, cool down 5."},
 {d:"2026-08-14",t:"strength",title:"Leg Day A (45 min) — legs only",detail:"Moved here so it's not stacked before a quality run. Skip all pulling movements, your lats need the week. Hydrate well beforehand; calves cramped last session. RPE 7, leave 2–3 reps in the tank."},
 {d:"2026-08-15",t:"rest",title:"Rest or 30-min walk",detail:"Recovery between leg day and tomorrow's long run. Legs up, eat well, hydrate."},
@@ -318,15 +318,16 @@ const PLAN = [
 ];
 
 // ── Actuals synced from Strava (last sync: Aug 8, 2026) ──
-const LAST_SYNC = 'Aug 12, 2026';
+const LAST_SYNC = 'Aug 13, 2026';
 const ACTUALS = {
 '2026-08-03': {name:'Costco 4 miler again', mi:4.53, sec:2568, time:'42:48', pace:'9:27', elev:98, cal:488, effort:116, cadence:142, prs:5, note:'Post-Lolla chill run · 6 achievements, 5 PRs'},
 '2026-08-05': {name:'Genuinely might be the worst run of my life', mi:3.40, sec:2162, time:'36:02', pace:'10:35', elev:98, cal:395, effort:107, cadence:142, prs:2, note:'Brutal heat/humidity — but pace landed right in the easy zone'},
 '2026-08-08': {name:'6 at long run pace', mi:6.03, sec:4029, time:'1:07:09', pace:'11:08', elev:161, cal:735, effort:231, cadence:142, prs:17, note:'First real long run — hot day, high effort score, but pace was exactly on target'},
-'2026-08-10': {name:'Easy 3 + 4 strides 20sec', mi:3.30, sec:2066, time:'34:26', elev:66, pace:'10:27', cal:348, effort:49, cadence:141, prs:4, note:'Textbook easy day — relative effort 49, lowest of the block'}
+'2026-08-10': {name:'Easy 3 + 4 strides 20sec', mi:3.30, sec:2066, time:'34:26', elev:66, pace:'10:27', cal:348, effort:49, cadence:141, prs:4, note:'Textbook easy day — relative effort 49, lowest of the block'},
+'2026-08-12': {name:'Arlington run', mi:4.02, sec:2513, time:'41:53', elev:180, pace:'10:26', cal:460, effort:126, cadence:144, prs:0, note:'Makeup easy 4 — pace spot on, but effort 126 on 180 ft of climb + DC humidity'}
 };
 // Sessions confirmed complete (Lolla rest/travel days + Strava-logged runs, strength days). Checked automatically; you can still uncheck.
-const SEED_DONE = {'2026-07-30':1,'2026-08-01':1,'2026-08-02':1,'2026-08-03':1,'2026-08-04':1,'2026-08-05':1,'2026-08-06':1,'2026-08-07':1,'2026-08-08':1,'2026-08-09':1,'2026-08-10':1,'2026-08-11':1};
+const SEED_DONE = {'2026-07-30':1,'2026-08-01':1,'2026-08-02':1,'2026-08-03':1,'2026-08-04':1,'2026-08-05':1,'2026-08-06':1,'2026-08-07':1,'2026-08-08':1,'2026-08-09':1,'2026-08-10':1,'2026-08-11':1,'2026-08-12':1};
 
 const $ = s => document.querySelector(s);
 const done = Object.assign({}, SEED_DONE, JSON.parse(localStorage.getItem('mtDone')||'{}'));
@@ -406,7 +407,10 @@ PLAN.forEach(w=>{
   shtml+='<div class="card" style="margin-top:12px;"><h3>Runs logged since plan start</h3>'+
     (rows?'<table><tr><th>Date</th><th>Run</th><th>Dist</th><th>Time</th><th>Pace</th><th>Effort</th></tr>'+rows+'</table>':'<p>No runs logged yet.</p>')+
     '<div class="note">Synced from Strava · last sync '+LAST_SYNC+'. Ask Claude to "sync my Strava runs" anytime to refresh this page.</div></div>';
-  shtml+='<div class="card"><h3>Coach\'s read — Aug 12</h3>'+
+  shtml+='<div class="card good"><h3>Coach\'s read — Aug 13</h3>'+
+    '<p>Four straight runs in the target easy zone now: 11:08, 10:27, 10:26 — the discipline is holding. Yesterday\'s Arlington 4-miler was pace-perfect, though relative effort jumped to <b>126</b> vs. Monday\'s 49 for a similar pace. That\'s the 180 ft of climb plus August humidity, not a pacing error — on rolling terrain, effort rises even when pace doesn\'t. Normal, and honestly good training.</p>'+
+    '<p><b>Today is the tempo</b> — first real quality session of the block. 10 min warmup, then 2×8 min at 8:30–8:50 with 3 min jog between, 5 min cooldown. Don\'t chase the pace number if it\'s hot: the target is "comfortably hard, only a few words at a time." If you finish the second interval thinking you could have done a third, that\'s exactly right.</p></div>';
+  shtml+='<div class="card"><h3>Earlier read — Aug 12</h3>'+
     '<p>Tuesday\'s easy 4 became a chest & back session — no problem, the week\'s rebalanced. The lat pulldown mix-up (90 kg ≈ 198 lbs) means your lats and mid-back are going to be wrecked for 2–3 days, so <b>Friday\'s Upper B is cancelled</b> and there\'s no pulling until next week. Running is unaffected — upper-body soreness doesn\'t touch your legs.</p>'+
     '<p><b>New week shape:</b> easy 4 today (fresh legs) → tempo Thursday (the week\'s key session, now un-stacked from leg day) → Leg Day A Friday → rest Saturday → long run 8 Sunday. Same ~20 mi total, better spacing. The old layout had leg day the day before both the tempo and the long run, which was a mistake on my end — this fixes it going forward.</p></div>';
   shtml+='<div class="card good"><h3>Earlier read — Aug 10</h3>'+
