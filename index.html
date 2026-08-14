@@ -223,10 +223,10 @@ const PLAN = [
 {d:"2026-08-10",t:"run",title:"Easy 3 mi + 4 strides",detail:"No travel prep needed now — get a real run in. Strides = 20 s smooth accelerations, walk back. Done at 10:27/mi with effort 49 — best-executed easy day of the block so far."},
 {d:"2026-08-11",t:"strength",title:"Chest & Back (swapped in for easy 4 mi)",detail:"Lifted instead of running — fine, week rebalanced around it. Lat pulldown at 90 kg (not lbs) fried the lats, so Friday's Upper B is cancelled; upper body gets the week off to recover."},
 {d:"2026-08-12",t:"run",title:"Easy 4 mi — makeup run",detail:"Yesterday's run moved here. Legs are fresh (yesterday was upper only), so this sets up tomorrow's tempo. Same feel as Monday: 10:00–11:00/mi. Pulling is off-limits — no pull-ups, no rows. Done on the Arlington trails at 10:26/mi."},
-{d:"2026-08-13",t:"workout",title:"Tempo intro: 5 mi w/ 2×8 min comfortably hard",detail:"⭐ Key session of the week, now on fresh legs. 8:30–8:50 pace or 'can only say a few words.' Jog 3 min between. Warm up 10 min, cool down 5."},
-{d:"2026-08-14",t:"strength",title:"Leg Day A (45 min) — legs only",detail:"Moved here so it's not stacked before a quality run. Skip all pulling movements, your lats need the week. Hydrate well beforehand; calves cramped last session. RPE 7, leave 2–3 reps in the tank."},
-{d:"2026-08-15",t:"rest",title:"Rest or 30-min walk",detail:"Recovery between leg day and tomorrow's long run. Legs up, eat well, hydrate."},
-{d:"2026-08-16",t:"long",title:"Long run 8 mi",detail:"Moved to Sunday so it lands on rested legs. Early AM start, beat the DC humidity. Gel at minute 40 to practice, 500 ml fluids. Target 10:00–11:15/mi like last week's."}]},
+{d:"2026-08-13",t:"workout",title:"Tempo intro: 5 mi w/ 2×8 min comfortably hard",detail:"⭐ Key session of the week, now on fresh legs. 8:30–8:50 pace or 'can only say a few words.' Jog 3 min between. Warm up 10 min, cool down 5. Executed exactly as written — 2×8 at 8:30. Left calf/shin pain reported afterward."},
+{d:"2026-08-14",t:"strength",title:"Leg Day A — MODIFIED (calf work removed)",detail:"⚠️ Shin/calf flagged yesterday, so: DO the hip/glute work (Bulgarian split squats, SL-RDL, hip thrusts, band walks, Copenhagen) — glute strength actually reduces shin load. SKIP both calf raise variants and anything jumping/explosive until the shin is quiet. Still no pulling for the lats. If the shin hurts during any movement, stop that movement."},
+{d:"2026-08-15",t:"rest",title:"Rest — shin check day",detail:"Full rest. The test: does it hurt when you walk normally? Gone by tomorrow = long run is on. Still aching = swap Sunday for a bike/swim. Calf raises off, but DO gentle calf/soleus stretching + 10 min foam roll on the calf, and ice the shin 15 min if it's tender."},
+{d:"2026-08-16",t:"long",title:"Long run 8 mi — conditional on the shin",detail:"🟢 No pain walking → run it, easy 10:30–11:15/mi, softest surface you can find (Rock Creek dirt/gravel over sidewalk), and stop if sharp pain shows up. 🟡 Mild ache → cut to 5–6 mi easy on soft ground. 🔴 Still sore or painful to the touch on the bone → bike or swim 45–60 min instead. Missing one long run costs you almost nothing; a stress fracture costs you November."}]},
 {n:4,label:"Aug 17 – 23 · DC + wedding Sat",focus:"First VO2 work; long run BEFORE the wedding",miles:"~21 mi",days:[
 {d:"2026-08-17",t:"run",title:"Easy 4 mi + 4 strides",detail:""},
 {d:"2026-08-18",t:"strength",title:"Leg Day A",detail:""},
@@ -318,16 +318,17 @@ const PLAN = [
 ];
 
 // ── Actuals synced from Strava (last sync: Aug 8, 2026) ──
-const LAST_SYNC = 'Aug 13, 2026';
+const LAST_SYNC = 'Aug 14, 2026';
 const ACTUALS = {
 '2026-08-03': {name:'Costco 4 miler again', mi:4.53, sec:2568, time:'42:48', pace:'9:27', elev:98, cal:488, effort:116, cadence:142, prs:5, note:'Post-Lolla chill run · 6 achievements, 5 PRs'},
 '2026-08-05': {name:'Genuinely might be the worst run of my life', mi:3.40, sec:2162, time:'36:02', pace:'10:35', elev:98, cal:395, effort:107, cadence:142, prs:2, note:'Brutal heat/humidity — but pace landed right in the easy zone'},
 '2026-08-08': {name:'6 at long run pace', mi:6.03, sec:4029, time:'1:07:09', pace:'11:08', elev:161, cal:735, effort:231, cadence:142, prs:17, note:'First real long run — hot day, high effort score, but pace was exactly on target'},
 '2026-08-10': {name:'Easy 3 + 4 strides 20sec', mi:3.30, sec:2066, time:'34:26', elev:66, pace:'10:27', cal:348, effort:49, cadence:141, prs:4, note:'Textbook easy day — relative effort 49, lowest of the block'},
-'2026-08-12': {name:'Arlington run', mi:4.02, sec:2513, time:'41:53', elev:180, pace:'10:26', cal:460, effort:126, cadence:144, prs:0, note:'Makeup easy 4 — pace spot on, but effort 126 on 180 ft of climb + DC humidity'}
+'2026-08-12': {name:'Arlington run', mi:4.02, sec:2513, time:'41:53', elev:180, pace:'10:26', cal:460, effort:126, cadence:144, prs:0, note:'Makeup easy 4 — pace spot on, but effort 126 on 180 ft of climb + DC humidity'},
+'2026-08-13': {name:'Run to xians famous foods (TEMPO)', mi:5.02, sec:2902, time:'48:22', elev:253, pace:'9:38 avg', cal:527, effort:122, cadence:145, prs:0, note:'⭐ First tempo nailed — 2×8 min at 8:30 exactly as prescribed. ⚠️ Left calf/shin pain reported'}
 };
 // Sessions confirmed complete (Lolla rest/travel days + Strava-logged runs, strength days). Checked automatically; you can still uncheck.
-const SEED_DONE = {'2026-07-30':1,'2026-08-01':1,'2026-08-02':1,'2026-08-03':1,'2026-08-04':1,'2026-08-05':1,'2026-08-06':1,'2026-08-07':1,'2026-08-08':1,'2026-08-09':1,'2026-08-10':1,'2026-08-11':1,'2026-08-12':1};
+const SEED_DONE = {'2026-07-30':1,'2026-08-01':1,'2026-08-02':1,'2026-08-03':1,'2026-08-04':1,'2026-08-05':1,'2026-08-06':1,'2026-08-07':1,'2026-08-08':1,'2026-08-09':1,'2026-08-10':1,'2026-08-11':1,'2026-08-12':1,'2026-08-13':1};
 
 const $ = s => document.querySelector(s);
 const done = Object.assign({}, SEED_DONE, JSON.parse(localStorage.getItem('mtDone')||'{}'));
@@ -407,7 +408,12 @@ PLAN.forEach(w=>{
   shtml+='<div class="card" style="margin-top:12px;"><h3>Runs logged since plan start</h3>'+
     (rows?'<table><tr><th>Date</th><th>Run</th><th>Dist</th><th>Time</th><th>Pace</th><th>Effort</th></tr>'+rows+'</table>':'<p>No runs logged yet.</p>')+
     '<div class="note">Synced from Strava · last sync '+LAST_SYNC+'. Ask Claude to "sync my Strava runs" anytime to refresh this page.</div></div>';
-  shtml+='<div class="card good"><h3>Coach\'s read — Aug 13</h3>'+
+  shtml+='<div class="card warn"><h3>Coach\'s read — Aug 14 · shin flag 🚩</h3>'+
+    '<p><b>The tempo was excellent</b> — 2×8 min at 8:30, exactly as prescribed, on a 253 ft rolling route. First real quality session of the block, executed clean. Running with your neighbor is a good habit to keep.</p>'+
+    '<p><b>But the left calf/shin needs attention now, not later.</b> This is the #1 injury pattern for someone building from 5–10 mpw to 20+ in a month, and it\'s completely manageable if you respect it this week — or it becomes a stress fracture that ends the whole thing. Stretching alone won\'t fix it; it\'s a load problem, not a tightness problem.</p>'+
+    '<p><b>Tell the difference:</b> a diffuse ache along the inner shin that warms up and fades a mile in is classic shin splints — annoying, trainable around. Pain that\'s sharp, pinpoint on the bone, sore when you press one spot with a finger, or that gets worse as the run goes on is the one that needs a doctor and no running.</p>'+
+    '<p><b>What I changed:</b> today\'s leg day keeps the hip/glute work (that helps shins) but drops all calf raises and jumping. Saturday is a hard rest + shin check. Sunday\'s long run is now conditional — green/yellow/red rules in the Plan tab. Also worth noting your cadence sits around 141–145; nudging toward 165–170 with shorter, quicker steps meaningfully cuts shin loading. Worth playing with on easy runs once this settles.</p></div>';
+  shtml+='<div class="card good"><h3>Earlier read — Aug 13</h3>'+
     '<p>Four straight runs in the target easy zone now: 11:08, 10:27, 10:26 — the discipline is holding. Yesterday\'s Arlington 4-miler was pace-perfect, though relative effort jumped to <b>126</b> vs. Monday\'s 49 for a similar pace. That\'s the 180 ft of climb plus August humidity, not a pacing error — on rolling terrain, effort rises even when pace doesn\'t. Normal, and honestly good training.</p>'+
     '<p><b>Today is the tempo</b> — first real quality session of the block. 10 min warmup, then 2×8 min at 8:30–8:50 with 3 min jog between, 5 min cooldown. Don\'t chase the pace number if it\'s hot: the target is "comfortably hard, only a few words at a time." If you finish the second interval thinking you could have done a third, that\'s exactly right.</p></div>';
   shtml+='<div class="card"><h3>Earlier read — Aug 12</h3>'+
