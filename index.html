@@ -229,7 +229,7 @@ const PLAN = [
 {d:"2026-08-16",t:"rest",title:"Long run 8 mi — MISSED (NYC)",detail:"Long-run ladder shifted back a week to absorb this. Week 3 finished at 12.3 mi instead of ~20."}]},
 {n:4,label:"Aug 17 – 23 · DC + wedding Sat · RETURN WEEK",focus:"Ease back in, then test VO2 with short reps if the shin stays quiet",miles:"~14 mi",days:[
 {d:"2026-08-17",t:"rest",title:"Rest — back from NYC",detail:"Travel day. Rehydrate hard: the calf tightness is a dehydration + walking symptom, not an injury."},
-{d:"2026-08-18",t:"run",title:"Easy 3 mi — RETURN RUN 🩺",detail:"First run in 5 days. Short and genuinely slow (10:30–11:15/mi) — this is a test, not a workout. Shin should stay quiet; if a sharp pain shows up, walk home and tell me. Flat, soft surface if you can."},
+{d:"2026-08-18",t:"run",title:"Easy 3 mi — RETURN RUN 🩺",detail:"First run in 5 days. Short and genuinely slow (10:30–11:15/mi) — this is a test, not a workout. Done: 3.23 mi at 10:43/mi, effort 74, cadence up to 146. Textbook execution."},
 {d:"2026-08-19",t:"strength",title:"Leg Day A — calf work back in, light",detail:"Full session again, but reintroduce both calf raise variants at low load / bodyweight only. Hydrate before and after. Pulling is fine again — lats have had a week."},
 {d:"2026-08-20",t:"workout",title:"VO2 toe-in-the-water: 4 mi w/ 4×90 sec hard",detail:"⚡ Conditional on the shin. GREEN (silent Tue during + next morning) → 10 min warmup, 4×90 sec at 7:45–8:10 with FULL 2-min jog recovery, easy to finish. Only 6 min of hard running total — enough stimulus to matter, short enough that if the shin objects you find out fast. YELLOW (any ache Tue) → plain easy 4 + strides, VO2 waits. Abort mid-session if you feel anything sharp in the shin; that's the whole point of short reps."},
 {d:"2026-08-21",t:"long",title:"Long run 7 mi (morning)",detail:"Cut from 9 → 7. You haven't run over 6 yet, and jumping to 9 off a week of near-zero is how shins turn into stress fractures. Friday morning so the wedding costs you nothing. Gel at 40 min, electrolytes after."},
@@ -318,17 +318,18 @@ const PLAN = [
 ];
 
 // ── Actuals synced from Strava (last sync: Aug 8, 2026) ──
-const LAST_SYNC = 'Aug 18, 2026';
+const LAST_SYNC = 'Aug 19, 2026';
 const ACTUALS = {
 '2026-08-03': {name:'Costco 4 miler again', mi:4.53, sec:2568, time:'42:48', pace:'9:27', elev:98, cal:488, effort:116, cadence:142, prs:5, note:'Post-Lolla chill run · 6 achievements, 5 PRs'},
 '2026-08-05': {name:'Genuinely might be the worst run of my life', mi:3.40, sec:2162, time:'36:02', pace:'10:35', elev:98, cal:395, effort:107, cadence:142, prs:2, note:'Brutal heat/humidity — but pace landed right in the easy zone'},
 '2026-08-08': {name:'6 at long run pace', mi:6.03, sec:4029, time:'1:07:09', pace:'11:08', elev:161, cal:735, effort:231, cadence:142, prs:17, note:'First real long run — hot day, high effort score, but pace was exactly on target'},
 '2026-08-10': {name:'Easy 3 + 4 strides 20sec', mi:3.30, sec:2066, time:'34:26', elev:66, pace:'10:27', cal:348, effort:49, cadence:141, prs:4, note:'Textbook easy day — relative effort 49, lowest of the block'},
 '2026-08-12': {name:'Arlington run', mi:4.02, sec:2513, time:'41:53', elev:180, pace:'10:26', cal:460, effort:126, cadence:144, prs:0, note:'Makeup easy 4 — pace spot on, but effort 126 on 180 ft of climb + DC humidity'},
-'2026-08-13': {name:'Run to xians famous foods (TEMPO)', mi:5.02, sec:2902, time:'48:22', elev:253, pace:'9:38 avg', cal:527, effort:122, cadence:145, prs:0, note:'⭐ First tempo nailed — 2×8 min at 8:30 exactly as prescribed. ⚠️ Left calf/shin pain reported'}
+'2026-08-13': {name:'Run to xians famous foods (TEMPO)', mi:5.02, sec:2902, time:'48:22', elev:253, pace:'9:38 avg', cal:527, effort:122, cadence:145, prs:0, note:'⭐ First tempo nailed — 2×8 min at 8:30 exactly as prescribed. ⚠️ Left calf/shin pain reported'},
+'2026-08-18': {name:'Night Run (return run)', mi:3.23, sec:2076, time:'34:36', elev:128, pace:'10:43', cal:362, effort:74, cadence:146, prs:0, note:'First run back after 5 days off — easy zone, cadence up to 146'}
 };
 // Sessions confirmed complete (Lolla rest/travel days + Strava-logged runs, strength days). Checked automatically; you can still uncheck.
-const SEED_DONE = {'2026-07-30':1,'2026-08-01':1,'2026-08-02':1,'2026-08-03':1,'2026-08-04':1,'2026-08-05':1,'2026-08-06':1,'2026-08-07':1,'2026-08-08':1,'2026-08-09':1,'2026-08-10':1,'2026-08-11':1,'2026-08-12':1,'2026-08-13':1,'2026-08-14':1,'2026-08-15':1,'2026-08-17':1};
+const SEED_DONE = {'2026-07-30':1,'2026-08-01':1,'2026-08-02':1,'2026-08-03':1,'2026-08-04':1,'2026-08-05':1,'2026-08-06':1,'2026-08-07':1,'2026-08-08':1,'2026-08-09':1,'2026-08-10':1,'2026-08-11':1,'2026-08-12':1,'2026-08-13':1,'2026-08-14':1,'2026-08-15':1,'2026-08-17':1,'2026-08-18':1};
 
 const $ = s => document.querySelector(s);
 const done = Object.assign({}, SEED_DONE, JSON.parse(localStorage.getItem('mtDone')||'{}'));
@@ -408,7 +409,10 @@ PLAN.forEach(w=>{
   shtml+='<div class="card" style="margin-top:12px;"><h3>Runs logged since plan start</h3>'+
     (rows?'<table><tr><th>Date</th><th>Run</th><th>Dist</th><th>Time</th><th>Pace</th><th>Effort</th></tr>'+rows+'</table>':'<p>No runs logged yet.</p>')+
     '<div class="note">Synced from Strava · last sync '+LAST_SYNC+'. Ask Claude to "sync my Strava runs" anytime to refresh this page.</div></div>';
-  shtml+='<div class="card good"><h3>Coach\'s read — Aug 18 · recalibrated</h3>'+
+  shtml+='<div class="card good"><h3>Coach\'s read — Aug 19 · return run passed</h3>'+
+    '<p><b>3.23 mi at 10:43/mi, effort 74.</b> Exactly what a return run should look like — slow, short, controlled. Five days off and you came back at easy pace instead of testing the legs, which is the harder discipline. Also worth flagging: <b>cadence was 146</b>, up from the 141–145 range. Small move, right direction — higher cadence means shorter strides and less peak load per footstrike, which is directly protective for the shin.</p>'+
+    '<p><b>Thursday\'s VO2 test is gated on one thing I can\'t see:</b> how the shin felt during that run and, more importantly, when you got out of bed this morning. Silent both times → do the 4×90 sec as written. Any ache → plain easy 4 and we push VO2 to Aug 24. Tell me either way.</p></div>';
+  shtml+='<div class="card"><h3>Earlier read — Aug 18 · recalibrated</h3>'+
     '<p><b>Five days off cost you almost nothing.</b> Meaningful aerobic detraining takes 10–14 days; at 4–5 days you lose essentially zero VO2 max and zero endurance. And given the shin was complaining on Aug 13, this was the single best thing that could have happened to it — an unplanned deload right when you needed one. NYC walking kept the aerobic base ticking over as zone-1 volume.</p>'+
     '<p><b>The real cost is one week of volume, not fitness.</b> Week 3 finished at 12.3 mi instead of ~20, and your longest run is still the 6-miler from Aug 8. The long-run ladder is rebuilt below — it does NOT fully catch up, and that\'s deliberate. It runs about a mile light through late September and converges where it matters: <b>the Oct 10 peak long run is unchanged at 18.</b></p>'+
     '<div class="note"><b>Long-run ladder (rebuilt, back on original numbers by Sep 26):</b> Aug 21 <b>7</b> → Aug 26 <b>8</b> (only 5 days apart, hence the small step) → Sep 2 <b>10</b> → Sep 13 <b>12</b> (or 11 if the birthday weekend wrecks you) → Sep 19 <b>14</b> → Sep 26 <b>16</b> ⭐ decision run → Oct 1 <b>12</b> cutback → <b>Oct 10 · 18 · PEAK</b> → Oct 17 12 → Oct 24 8 → race. Only Aug 21 and Aug 26 remain below the original plan.</div>'+
