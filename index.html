@@ -233,7 +233,7 @@ const PLAN = [
 {d:"2026-08-18",t:"run",title:"Easy 3 mi — RETURN RUN 🩺",detail:"First run in 5 days. Short and genuinely slow (10:30–11:15/mi) — this is a test, not a workout. Done: 3.23 mi at 10:43/mi, effort 74, cadence up to 146. Textbook execution."},
 {d:"2026-08-19",t:"travel",title:"Travel to Cary — leg day moved to Sunday",detail:"Unplanned trip. Leg Day A pushed to Sun Aug 23 (no drinking Saturday, so Sunday's usable). Nothing lost.",badge:"✈️ Cary"},
 {d:"2026-08-20",t:"workout",title:"VO2 test: 4 mi w/ 4×90 sec hard",detail:"⚡ 12 min easy warmup, then 4×90 sec at 7:45–8:10 with FULL 2-min jog recovery, easy to finish. ✅ PASSED — executed exactly as written at 7:45, effort only 68, no shin complaint. Full 5×3 min VO2 confirmed for Tue Aug 25."},
-{d:"2026-08-21",t:"long",title:"Long run 7 mi — Cary 🌳",detail:"Cut from 9 → 7. Longest since Aug 8. In Cary, so use soft ground: American Tobacco Trail (crushed gravel, flat) or the White Oak Creek / Black Creek greenways — all kinder to the shin than sidewalk. 10:30–11:15/mi, gel at 40 min, electrolytes after.",badge:"✈️ Cary"},
+{d:"2026-08-21",t:"long",title:"Long run 7 mi",detail:"Cut from 9 → 7. Longest of the block. Done on the Charlotte Rail Trail at 10:46/mi — 7.33 mi, dead-on target pace, 17 PRs.",badge:"✈️ CLT"},
 {d:"2026-08-22",t:"rest",title:"Wedding 🥂 — full rest",detail:"Drinking protocol: dinner first, 1:1 water, electrolytes before bed."},
 {d:"2026-08-23",t:"strength",title:"Leg Day A (moved from Wed)",detail:"Full session, normal loads. Calf raises bodyweight only, 3×12 with a slow 3-second lower — eccentric work is protective for the shin. Pulling is fine again. If Saturday ended up being a heavier night than expected, swap this for a 30–45 min zone-1 walk and let it go; don't lift on a wrecked HRV."}]},
 {n:5,label:"Aug 24 – 30 · DC → NYC (Mochakk Fri/Sat)",focus:"Quality returns (tempo, not VO2). Long run midweek.",miles:"~17 mi",days:[
@@ -319,7 +319,7 @@ const PLAN = [
 ];
 
 // ── Actuals synced from Strava (last sync: Aug 8, 2026) ──
-const LAST_SYNC = 'Aug 21, 2026';
+const LAST_SYNC = 'Aug 22, 2026';
 const ACTUALS = {
 '2026-08-03': {name:'Costco 4 miler again', mi:4.53, sec:2568, time:'42:48', pace:'9:27', elev:98, cal:488, effort:116, cadence:142, prs:5, note:'Post-Lolla chill run · 6 achievements, 5 PRs'},
 '2026-08-05': {name:'Genuinely might be the worst run of my life', mi:3.40, sec:2162, time:'36:02', pace:'10:35', elev:98, cal:395, effort:107, cadence:142, prs:2, note:'Brutal heat/humidity — but pace landed right in the easy zone'},
@@ -328,10 +328,11 @@ const ACTUALS = {
 '2026-08-12': {name:'Arlington run', mi:4.02, sec:2513, time:'41:53', elev:180, pace:'10:26', cal:460, effort:126, cadence:144, prs:0, note:'Makeup easy 4 — pace spot on, but effort 126 on 180 ft of climb + DC humidity'},
 '2026-08-13': {name:'Run to xians famous foods (TEMPO)', mi:5.02, sec:2902, time:'48:22', elev:253, pace:'9:38 avg', cal:527, effort:122, cadence:145, prs:0, note:'⭐ First tempo nailed — 2×8 min at 8:30 exactly as prescribed. ⚠️ Left calf/shin pain reported'},
 '2026-08-18': {name:'Night Run (return run)', mi:3.23, sec:2076, time:'34:36', elev:128, pace:'10:43', cal:362, effort:74, cadence:146, prs:0, note:'First run back after 5 days off — easy zone, cadence up to 146'},
-'2026-08-20': {name:'Humid vo2 (VO2 TEST)', mi:4.02, sec:2533, time:'42:13', elev:341, pace:'10:30 avg', cal:424, effort:68, cadence:149, prs:0, note:'⚡ 4×90 sec @ 7:45 exactly as written. Effort only 68 — recoveries did their job. Cadence 149. Shin/ankle tendons tight 1–2 mi in, then resolved — the good pattern.'}
+'2026-08-20': {name:'Humid vo2 (VO2 TEST)', mi:4.02, sec:2533, time:'42:13', elev:341, pace:'10:30 avg', cal:424, effort:68, cadence:149, prs:0, note:'⚡ 4×90 sec @ 7:45 exactly as written. Effort only 68 — recoveries did their job. Cadence 149. Shin/ankle tendons tight 1–2 mi in, then resolved — the good pattern.'},
+'2026-08-21': {name:'Clt railtrail (long run)', mi:7.33, sec:4736, time:'1:18:56', elev:141, pace:'10:46', cal:805, effort:159, cadence:149, prs:17, note:'⭐ Longest run of the block. Rail trail in Charlotte, dead-on target pace, 17 PRs.'}
 };
 // Sessions confirmed complete (Lolla rest/travel days + Strava-logged runs, strength days). Checked automatically; you can still uncheck.
-const SEED_DONE = {'2026-07-30':1,'2026-08-01':1,'2026-08-02':1,'2026-08-03':1,'2026-08-04':1,'2026-08-05':1,'2026-08-06':1,'2026-08-07':1,'2026-08-08':1,'2026-08-09':1,'2026-08-10':1,'2026-08-11':1,'2026-08-12':1,'2026-08-13':1,'2026-08-14':1,'2026-08-15':1,'2026-08-17':1,'2026-08-18':1,'2026-08-19':1,'2026-08-20':1};
+const SEED_DONE = {'2026-07-30':1,'2026-08-01':1,'2026-08-02':1,'2026-08-03':1,'2026-08-04':1,'2026-08-05':1,'2026-08-06':1,'2026-08-07':1,'2026-08-08':1,'2026-08-09':1,'2026-08-10':1,'2026-08-11':1,'2026-08-12':1,'2026-08-13':1,'2026-08-14':1,'2026-08-15':1,'2026-08-17':1,'2026-08-18':1,'2026-08-19':1,'2026-08-20':1,'2026-08-21':1};
 
 const $ = s => document.querySelector(s);
 const done = Object.assign({}, SEED_DONE, JSON.parse(localStorage.getItem('mtDone')||'{}'));
@@ -411,7 +412,12 @@ PLAN.forEach(w=>{
   shtml+='<div class="card" style="margin-top:12px;"><h3>Runs logged since plan start</h3>'+
     (rows?'<table><tr><th>Date</th><th>Run</th><th>Dist</th><th>Time</th><th>Pace</th><th>Effort</th></tr>'+rows+'</table>':'<p>No runs logged yet.</p>')+
     '<div class="note">Synced from Strava · last sync '+LAST_SYNC+'. Ask Claude to "sync my Strava runs" anytime to refresh this page.</div></div>';
-  shtml+='<div class="card good"><h3>Coach\'s read — Aug 21 · VO2 test passed ✅</h3>'+
+  shtml+='<div class="card good"><h3>Coach\'s read — Aug 22 · best week of the block</h3>'+
+    '<p><b>Week 4 finished at ~15 mi with every session executed as written.</b> Return run 10:43, VO2 test 4×90 @ 7:45 with effort 68, long run 7.33 mi at 10:46 on the Charlotte Rail Trail. That long run is the longest of the block and 17 PRs came with it, which is what happens when you\'ve never run that far at that pace before.</p>'+
+    '<p><b>Effort 159 on the long run is not a warning.</b> Relative effort accumulates with duration — 79 minutes of running scores higher than 42 minutes of intervals almost regardless of intensity. Pace was 10:46, mid-target. Nothing to fix.</p>'+
+    '<p><b>Cadence held at 149</b> across both the VO2 session and the long run. It\'s stuck, not a fluke.</p>'+
+    '<p><b>Today: wedding.</b> Drinking protocol in the Recovery tab — eat properly first, 1:1 water, electrolytes before bed. Leg day tomorrow, but if tonight runs long, swap it for a walk. Tuesday\'s full 5×3 min VO2 is the session that matters this week.</p></div>';
+  shtml+='<div class="card"><h3>Earlier read — Aug 21 · VO2 test passed ✅</h3>'+
     '<p><b>Executed exactly as written</b> — 12 min warmup, 4×90 sec at 7:45, honest 2-min recoveries, easy to finish. You hit the fast end of the 7:45–8:10 band. The number that matters most: <b>relative effort 68</b>, on an interval session, in DC humidity. Your easy 4 on Aug 12 scored 126 and the Aug 13 tempo scored 122. Low effort on a hard session means the full recoveries did their job — that\'s controlled interval work, not surviving it. No shin complaint. Full 5×3 min is confirmed for Tue Aug 25, which puts you back on the original VO2 schedule with nothing lost.</p>'+
     '<p><b>Cadence is now a real trend: 141 → 145 → 146 → 149.</b> That\'s +8 in three weeks without being coached on it. Shorter, quicker steps mean lower peak load per footstrike — it\'s the most protective adaptation available to you given the shin history, and it\'s happening on its own. 165–170 is the eventual target, but the direction matters more than the number.</p>'+
     '<p><b>Today: long run 7 mi.</b> Longest since the Aug 8 six-miler. 10:30–11:15/mi, gel at 40 min. Then the wedding tomorrow, leg day Sunday.</p></div>';
