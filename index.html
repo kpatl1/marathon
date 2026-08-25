@@ -123,8 +123,20 @@
     <tr><td>Lateral band walk + Copenhagen plank</td><td>2 × 12 / 2 × 20s</td><td>Glute med + adductors = knee & hip stability</td></tr></table>
     <div class="note">Keep loads at RPE 7 — leave 2–3 reps in the tank. You're building durability, not maxing. Never within 24 hrs before a long run or workout. Taper: last heavy session Oct 7, bodyweight-only after Oct 14.</div>
   </div>
+  <div class="card good">
+    <h3>Standing rule: upper body on rest days ✅</h3>
+    <p><b>Yes, add it.</b> Upper-body lifting has low systemic cost for a runner — it doesn't load the legs, doesn't deplete glycogen much, and doesn't meaningfully impair next-day running. The "keep rest days rested" principle exists to protect your legs and your recovery from running stress. Push/pull work is largely outside that.</p>
+    <p><b>Four rules to keep it from backfiring:</b></p>
+    <ul>
+      <li><b>Cap it at ~40 min.</b> The failure mode isn't lifting, it's a 90-minute session that eats the sleep you already don't have enough of.</li>
+      <li><b>Skip it on red Oura days.</b> If readiness is under 55, a rest day means rest — that's systemic, not muscular.</li>
+      <li><b>Never the day before a long run or quality session</b> if it involves heavy pressing overhead. Fatigued shoulders change your arm carriage and running posture late in a long run.</li>
+      <li><b>Taper it down from Oct 12</b> and stop entirely after Oct 24. Race week you want to feel light, not worked.</li>
+    </ul>
+    <p>Marked slots: <b>Aug 30, Sep 14, Sep 18, Sep 20, Sep 28, Oct 16</b>. Beyond those, any rest day is fair game under the rules above — just tell Claude and it gets logged.</p>
+  </div>
   <div class="card">
-    <h3>Day B — Upper + Core (1×/wk, ~35 min)</h3>
+    <h3>Day B — Upper + Core (~35 min)</h3>
     <table><tr><th>Exercise</th><th>Sets × Reps</th></tr>
     <tr><td>Pull-ups or rows</td><td>3 × 8–10</td></tr>
     <tr><td>DB overhead or bench press</td><td>3 × 8–10</td></tr>
@@ -243,7 +255,7 @@ const PLAN = [
 {d:"2026-08-27",t:"strength",title:"Leg Day A (AM) then travel to NYC 🏋️",detail:"⚠️ Rescheduled twice now — do it before you leave. Bulgarian split squats, SL-RDL, hip thrusts, band walks, Copenhagen. Calf raises bodyweight, 3×12, slow 3-sec lower. No gym → hotel circuit ×4 rounds (Strength tab), 25 min. Two weeks without single-leg work is the one real gap in an otherwise clean block. Legs recover while you travel afterward.",badge:"✈️ NYC"},
 {d:"2026-08-28",t:"run",title:"Easy 3 mi — West Side Highway or Central Park",detail:"Shakeout AM. Mochakk night 1 — protocol on.",badge:"🎧 Mochakk"},
 {d:"2026-08-29",t:"rest",title:"Rest — Mochakk @ K Bridge Park",detail:"Hydrate all day. It's an outdoor day show — sunscreen + electrolytes.",badge:"🎧 Mochakk"},
-{d:"2026-08-30",t:"travel",title:"Home — recovery walk only",detail:"Two party nights = 48-hr recovery window starts now.",badge:"✈️ Home"}]},
+{d:"2026-08-30",t:"travel",title:"Home — recovery walk, Upper B if you're up for it",detail:"Two party nights = 48-hr recovery window for the legs. Upper body is fair game if you feel human — it won't slow the running recovery.",badge:"✈️ Home"}]},
 {n:6,label:"Aug 31 – Sep 6 · DC → Chicago (North Coast Sep 3–7)",focus:"Front-load the week, cruise the fest",miles:"~19 mi",days:[
 {d:"2026-08-31",t:"workout",title:"Tempo: 5 mi w/ 20 min continuous @ 8:30–8:50",detail:"HRV may still be meh from NYC — if Oura is red, swap with tomorrow."},
 {d:"2026-09-01",t:"strength",title:"Leg Day A",detail:""},
@@ -261,13 +273,13 @@ const PLAN = [
 {d:"2026-09-12",t:"rest",title:"Rest / long walk",detail:"Hydrate hard today — tomorrow matters.",badge:"🎉 Bday"},
 {d:"2026-09-13",t:"long",title:"Long run 12 mi (afternoon OK) — 11 if the birthday weekend was rough",detail:"Back to 12 to stay on track for a 16 mi decision run. But this follows North Coast AND three nights of birthday, so it's an honest call: feel decent → 12. Wrecked → 11, no guilt, the ladder still works. Sleep in, big salty breakfast, run at 4–5 PM when you feel human. Easy pace only."}]},
 {n:8,label:"Sep 14 – 20 · DC (clean week)",focus:"BUILD — first MP work, race fueling practice, midweek medium-long added",miles:"~29 mi",days:[
-{d:"2026-09-14",t:"rest",title:"Rest or 30-min recovery walk",detail:""},
+{d:"2026-09-14",t:"strength",title:"Upper B + 30-min walk",detail:"Pull, press, dead bugs, Pallof, side planks. ~35 min. See Strength tab."},
 {d:"2026-09-15",t:"workout",title:"VO2: 6×800 m hard / 2-min jog (≈5 mi)",detail:"7:45–8:10 pace. Track or flat path. Warm up 10 min."},
 {d:"2026-09-16",t:"strength",title:"Leg Day A",detail:""},
 {d:"2026-09-17",t:"run",title:"Medium-long 7 mi — steady easy",detail:"⬆️ Upgraded from easy 5. This is the piece that makes a 16 mi decision run safe: total weekly volume, not a bigger Saturday. Straight easy pace, no surges."},
 {d:"2026-09-18",t:"run",title:"Easy 3 mi + Upper B",detail:"Truly easy — you have 14 on Saturday."},
 {d:"2026-09-19",t:"long",title:"Long run 14 mi — last 3 @ MP (9:05–9:15)",detail:"FULL race fueling rehearsal: exact gels, exact timing, race breakfast. How MP feels at mile 11 is real data."},
-{d:"2026-09-20",t:"rest",title:"Rest / walk",detail:""}]},
+{d:"2026-09-20",t:"strength",title:"Upper B (light) or rest",detail:"Day after a 14-miler — if you're wrecked, take the rest. Upper body doesn't touch the legs, so it's your call."}]},
 {n:9,label:"Sep 21 – 27 · DC (clean week)",focus:"PEAK BUILD + sub-4 decision run",miles:"~34 mi",days:[
 {d:"2026-09-21",t:"run",title:"Easy 4 mi",detail:""},
 {d:"2026-09-22",t:"workout",title:"Threshold: 6 mi w/ 2×15 min @ 8:30–8:50",detail:"3-min jog between. Biggest tempo of the block."},
@@ -277,7 +289,7 @@ const PLAN = [
 {d:"2026-09-26",t:"long",title:"⭐ Long run 16 mi — 4 @ MP. THE DECISION RUN",detail:"Full fueling. If miles 11–15 at 9:05–9:15 feel controlled → race sub-4. If it's a grind → 4:10–4:20 plan, and that's a win too. Tell Claude how it went — this also decides whether Oct 10 extends to 19–20 mi and peak week bumps to ~38 (see Race Strategy tab)."},
 {d:"2026-09-27",t:"run",title:"Recovery 3 mi or walk",detail:""}]},
 {n:10,label:"Sep 28 – Oct 4 · DC → NYC (Dom Dolla Sat)",focus:"Planned cutback — travel week IS the recovery week",miles:"~25 mi",days:[
-{d:"2026-09-28",t:"rest",title:"Rest",detail:""},
+{d:"2026-09-28",t:"strength",title:"Upper B",detail:"Day after the decision run. Legs get the day off, upper body doesn't. ~35 min."},
 {d:"2026-09-29",t:"workout",title:"VO2: 5×1000 m / 2:30 jog (≈5.5 mi)",detail:""},
 {d:"2026-09-30",t:"strength",title:"Leg Day A",detail:""},
 {d:"2026-10-01",t:"long",title:"Long run 12 mi (early AM)",detail:"Cutback distance, done before NYC. Practice fueling anyway."},
@@ -297,7 +309,7 @@ const PLAN = [
 {d:"2026-10-13",t:"workout",title:"4×800 m @ 10K effort (≈4.5 mi)",detail:"Staying sharp, not building."},
 {d:"2026-10-14",t:"strength",title:"Maintenance: bodyweight legs + core (30 min)",detail:"Light. No soreness allowed from here on."},
 {d:"2026-10-15",t:"run",title:"Easy 4 mi",detail:""},
-{d:"2026-10-16",t:"rest",title:"Rest",detail:""},
+{d:"2026-10-16",t:"strength",title:"Upper B — last full session",detail:"Taper: after this, upper body goes maintenance only (lighter, fewer sets). Nothing that leaves you sore."},
 {d:"2026-10-17",t:"long",title:"Long run 12 mi — 4 @ MP",detail:"🍺 LAST CALL: if you're going out, tonight's the final one. After this weekend: dry until Nov 1."},
 {d:"2026-10-18",t:"rest",title:"Walk / rest",detail:"Two clean weeks start now. Sleep becomes your superpower."}]},
 {n:13,label:"Oct 19 – 25 · DC · Taper 2 (dry)",focus:"Fresh legs loading…",miles:"~19 mi",days:[
