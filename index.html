@@ -364,7 +364,7 @@ const PLAN = [
 ];
 
 // ── Actuals synced from Strava (last sync: Aug 8, 2026) ──
-const LAST_SYNC = 'Sep 6, 2026';
+const LAST_SYNC = 'Sep 8, 2026';
 const ACTUALS = {
 '2026-08-03': {name:'Costco 4 miler again', mi:4.53, sec:2568, time:'42:48', pace:'9:27', elev:98, cal:488, effort:116, cadence:142, prs:5, note:'Post-Lolla chill run · 6 achievements, 5 PRs'},
 '2026-08-05': {name:'Genuinely might be the worst run of my life', mi:3.40, sec:2162, time:'36:02', pace:'10:35', elev:98, cal:395, effort:107, cadence:142, prs:2, note:'Brutal heat/humidity — but pace landed right in the easy zone'},
@@ -382,7 +382,7 @@ const ACTUALS = {
 '2026-09-05': {name:'Pre north coast LR', mi:9.02, sec:5943, time:'1:39:03', elev:82, pace:'10:59', cal:992, effort:258, cadence:148, prs:0, note:'⭐ New longest of the block (+11.6% on 8.08). Chicago Lakefront, 10:59/mi — dead in the long-run window. "Felt good up the trail and then turned around and the sun was beating on me for the last 4.5 mi." Effort 258 is the highest of the block, but that\'s distance + full sun exposure, not pace. No pain language.'}
 };
 // Sessions confirmed complete (Lolla rest/travel days + Strava-logged runs, strength days). Checked automatically; you can still uncheck.
-const SEED_DONE = {'2026-07-30':1,'2026-08-01':1,'2026-08-02':1,'2026-08-03':1,'2026-08-04':1,'2026-08-05':1,'2026-08-06':1,'2026-08-07':1,'2026-08-08':1,'2026-08-09':1,'2026-08-10':1,'2026-08-11':1,'2026-08-12':1,'2026-08-13':1,'2026-08-14':1,'2026-08-15':1,'2026-08-17':1,'2026-08-18':1,'2026-08-19':1,'2026-08-20':1,'2026-08-21':1,'2026-08-22':1,'2026-08-23':1,'2026-08-24':1,'2026-08-25':1,'2026-08-26':1,'2026-08-27':1,'2026-08-28':1,'2026-08-29':1,'2026-08-30':1,'2026-08-31':1,'2026-09-01':1,'2026-09-02':1,'2026-09-03':1,'2026-09-05':1};
+const SEED_DONE = {'2026-07-30':1,'2026-08-01':1,'2026-08-02':1,'2026-08-03':1,'2026-08-04':1,'2026-08-05':1,'2026-08-06':1,'2026-08-07':1,'2026-08-08':1,'2026-08-09':1,'2026-08-10':1,'2026-08-11':1,'2026-08-12':1,'2026-08-13':1,'2026-08-14':1,'2026-08-15':1,'2026-08-17':1,'2026-08-18':1,'2026-08-19':1,'2026-08-20':1,'2026-08-21':1,'2026-08-22':1,'2026-08-23':1,'2026-08-24':1,'2026-08-25':1,'2026-08-26':1,'2026-08-27':1,'2026-08-28':1,'2026-08-29':1,'2026-08-30':1,'2026-08-31':1,'2026-09-01':1,'2026-09-02':1,'2026-09-03':1,'2026-09-04':1,'2026-09-05':1,'2026-09-06':1,'2026-09-07':1};
 
 const $ = s => document.querySelector(s);
 const done = Object.assign({}, SEED_DONE, JSON.parse(localStorage.getItem('mtDone')||'{}'));
