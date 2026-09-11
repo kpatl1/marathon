@@ -364,7 +364,7 @@ const PLAN = [
 ];
 
 // ── Actuals synced from Strava (last sync: Aug 8, 2026) ──
-const LAST_SYNC = 'Sep 11, 2026';
+const LAST_SYNC = 'Sep 10, 2026';
 const ACTUALS = {
 '2026-08-03': {name:'Costco 4 miler again', mi:4.53, sec:2568, time:'42:48', pace:'9:27', elev:98, cal:488, effort:116, cadence:142, prs:5, note:'Post-Lolla chill run · 6 achievements, 5 PRs'},
 '2026-08-05': {name:'Genuinely might be the worst run of my life', mi:3.40, sec:2162, time:'36:02', pace:'10:35', elev:98, cal:395, effort:107, cadence:142, prs:2, note:'Brutal heat/humidity — but pace landed right in the easy zone'},
@@ -464,7 +464,11 @@ PLAN.forEach(w=>{
   shtml+='<div class="card" style="margin-top:12px;"><h3>Runs logged since plan start</h3>'+
     (rows?'<table><tr><th>Date</th><th>Run</th><th>Dist</th><th>Time</th><th>Pace</th><th>Effort</th></tr>'+rows+'</table>':'<p>No runs logged yet.</p>')+
     '<div class="note">Synced from Strava · last sync '+LAST_SYNC+'. Ask Claude to "sync my Strava runs" anytime to refresh this page.</div></div>';
-  shtml+='<div class="card warn"><h3>Coach\'s read — Sep 6 · you got the nine 🌊</h3>'+
+  shtml+='<div class="card warn"><h3>Coach\'s read — Sep 10 · best week of the block, and it\'s not close 🎂</h3>'+
+    '<p><b>Three sessions, three hits, zero pain language.</b> Sunday\'s easy 5 at 10:29 came in at effort 79 — for reference, Sep 3 scored 139 for half a mile less. Wednesday\'s easy 3 at 10:49, effort 64, then the lift right after. Then the birthday tempo: 2×10 min at 8:30 exactly as written, which is <b>20 minutes at threshold against 16 on Aug 13 at the same pace</b>. Effort 135 for a longer, harder session than the one that scored 122 a month ago. That\'s fitness, plainly.</p>'+
+    '<p><b>The too-fast-easy habit is gone.</b> Every easy mile this week landed between 10:24 and 10:49 — dead in the window — and the effort scores followed. Cadence has settled at 148–150, up from 142 in early August. Hip thrusts and single-leg balance are back in the lift, which was the posterior-chain gap I flagged twice. SL-RDL is still the one missing piece; add it Monday.</p>'+
+    '<p><b>Week 7 sits at 13.1 miles with the long run still to come</b> — 10–11 on Saturday puts you at ~23–24, comfortably your biggest week yet. One thing to watch: that long run is the morning after bday round two, which is the exact setup the plan has dodged all block. <b>Start early, eat a real dinner tomorrow night, water 1:1.</b> You\'ve earned an easy Friday — take it fully, and then go get the eleven.</p></div>';
+  shtml+='<div class="card"><h3>Earlier read — Sep 6 · you got the nine 🌊</h3>'+
     '<p><b>9.02 miles at 10:59/mi is the best session of the block.</b> That\'s an 11.6% jump on your previous longest, run entirely inside the 10:45–11:15 window you were given, and you did it on the back end of a festival weekend. No pain language anywhere in the description — the shin and the posterior tibial both stayed quiet for 99 minutes, which is the thing I care about more than the mileage.</p>'+
     '<p><b>The one flag is effort 258, the highest of the block</b> — but I don\'t read that as overreaching. It\'s the longest run you\'ve done and, by your own account, "the sun was beating on me for the last 4.5 mi." That\'s a noon start doing what a noon start does. Distance-plus-heat, not pace-too-fast. Still: this is the second week running where the plan said morning and the run happened in the afternoon. In September that costs you 20–30% effort for free.</p>'+
     '<p><b>Week 6 closed at ~17.6 miles</b> (4.06 + 4.51 + 9.02) — your biggest week of the block, and the first one that actually built instead of holding flat at 12–15. Saturday\'s optional shakeout went unrun, which was the correct trade. <b>Rest today, sleep hard tonight, fly home tomorrow.</b> Then Sep 14–27 is the first genuinely clean two-week stretch on the calendar and the whole back half of this build depends on it. You just proved you can hold long-run pace at 9 miles in bad conditions — go into that block believing it.</p></div>';
