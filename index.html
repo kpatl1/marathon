@@ -58,6 +58,11 @@
   .warn { border-left:3px solid var(--workout); }
   .good { border-left:3px solid var(--rest); }
   .paces td:first-child { font-weight:600; white-space:nowrap; }
+  .segrow { display:flex; gap:6px; flex-wrap:wrap; }
+  .seg { border:1px solid var(--line); background:var(--card); border-radius:var(--radius); padding:6px 10px; font-size:12px; cursor:pointer; color:var(--muted); }
+  .seg.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .symrow { display:flex; gap:10px; align-items:center; font-size:12px; padding:3px 0; border-bottom:1px solid var(--line); }
+  .symdot { width:14px; height:14px; border-radius:3px; flex-shrink:0; }
 </style>
 </head>
 <body>
@@ -76,7 +81,42 @@
   <button class="tab" data-p="race">Race Strategy</button>
 </div>
 
-<div class="panel active" id="p-today"><div id="todayContent"></div></div>
+<div class="panel active" id="p-today">
+  <div class="card" style="border-left:4px solid var(--rest);">
+    <h3>🩺 Daily ankle check — 15 seconds</h3>
+    <div id="symToday" style="font-size:12.5px;color:var(--muted);margin-bottom:10px;"></div>
+    <div style="display:grid;grid-template-columns:1fr;gap:10px;">
+      <div><div style="font-size:12px;font-weight:600;margin-bottom:4px;">Hop test — 10 hops each leg</div>
+        <div class="segrow" data-k="hop">
+          <button class="seg" data-v="0">Same as right</button>
+          <button class="seg" data-v="1">Left lags slightly</button>
+          <button class="seg" data-v="2">Left clearly worse</button>
+          <button class="seg" data-v="3">Can't / painful</button>
+        </div></div>
+      <div><div style="font-size:12px;font-weight:600;margin-bottom:4px;">First steps out of bed</div>
+        <div class="segrow" data-k="am">
+          <button class="seg" data-v="0">Normal</button>
+          <button class="seg" data-v="1">Slightly stiff</button>
+          <button class="seg" data-v="2">Stiff, eases after a few min</button>
+          <button class="seg" data-v="3">Painful</button>
+        </div></div>
+      <div><div style="font-size:12px;font-weight:600;margin-bottom:4px;">Walking today</div>
+        <div class="segrow" data-k="walk">
+          <button class="seg" data-v="0">No pain</button>
+          <button class="seg" data-v="1">Aware of it</button>
+          <button class="seg" data-v="2">Hurts</button>
+          <button class="seg" data-v="3">Limping</button>
+        </div></div>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <button id="symSave" style="border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:var(--radius);padding:7px 16px;font-size:13px;font-weight:500;cursor:pointer;">Save today</button>
+      <span id="symMsg" style="font-size:12px;color:var(--muted);"></span>
+    </div>
+    <div id="symHist" style="margin-top:14px;"></div>
+    <div class="note" style="margin-top:10px;">Lower is better. Four days in is too early to read — tendinopathy shows its trend over 2–6 weeks, not day to day. Log it daily and the direction becomes obvious. Bring this to the Oct 8 PT appointment.</div>
+  </div>
+  <div id="todayContent"></div>
+</div>
 
 <div class="panel" id="p-plan">
   <div class="note">Tap a week to expand. Check off days as you go — progress saves on this device. Ask Claude to modify anything ("move my Week 8 long run to Sunday", "recalibrate paces from Strava") and this page gets updated.</div>
@@ -372,7 +412,7 @@ const PLAN = [
 {d:"2026-09-19",t:"rest",title:"🚴 Cross-train 45–60 min — hop pain returned Friday",detail:"<b>Timeline that decided this:</b> Wed hop tested clean barefoot → Thu ran 7 mi at 9:56/mi → Fri hop pain back. That is Thursday's run showing up 24 hrs later. Tendons respond on a delay, which is why 'felt fine during' is not the signal that matters.<br>Pain quality unchanged (same pinch, not burning, no numbness or weakness) — so this is the same peroneal irritation felt higher up the muscle, not a new problem. Peroneus longus originates at the fibular head just below the knee, so proximal + distal pain along one unit is expected.<br><b>Today: bike or pool 45–60 min</b> + isometric eversion holds 40 sec × 5 twice + gel + balance work. If you must run, 2–3 genuinely easy is the ceiling — not 5.<br><br><b>Logged:</b> 0.74 mi at 10:43/mi, effort 4 — an 8-minute jog, well under the ceiling. No bike or pool session logged."},
 {d:"2026-09-20",t:"rest",title:"Rest or 45 min easy bike",detail:"Zone 1 only. Isometric eversion holds 40 sec × 5, twice today. Gel. Balance work.<br><br><b>Logged:</b> nothing on Strava. Rest day, so no harm — but that is a third straight day with no bike or pool."}]},
 {n:9,label:"Sep 21 – 27 · DC · half mileage per doctor",focus:"Half running volume, cross-train the rest, no speed",miles:"~16 mi run + XT",days:[
-{d:"2026-09-21",t:"run",title:"Easy 3 mi 👟 first run in Glycerin Max 2",detail:"First real run in 4 days (Thu's 7 was the last). <b>Hop test first</b> — both legs the same → run it; left still lagging → cross-train and retest tomorrow.<br>Keep it at 3: first run in new shoes, first run back, and it is a half-mileage week. 11:00+, flat and uncambered. Gel after, not before. New Glycerin Max 2 = same line, fresh foam, no adaptation risk.<br><br><b>Logged:</b> 🏋️ no run — <b>Rehab leg day, 44 min</b>, relative effort 5. Description reports a doctor's call of <b>no running for 6 days</b> (so through ~Sep 27). Session was 3×30 s balance, heel raises 3×15 bent-knee and straight, 3×8 BSS, 3×8 single-leg RDL, 3×12 hip thrust — the SL-RDL finally in, which is the gap flagged since Sep 1. Correct call: the easy 3 was scrapped for the rehab work."},
+{d:"2026-09-21",t:"strength",title:"Rehab leg day ✅ — first complete session of the block",detail:"Balance 3×30 s, heel raises 3×15 bent-knee + straight, BSS 3×8, SL-RDL 3×8, hip thrusts 3×12. 44 min. The SL-RDL had been skipped every previous session — posterior chain finally trained. No run, correct call given 13k steps/day since Thursday."},
 {d:"2026-09-22",t:"rest",title:"Cross-train 60 min (bike / pool / elliptical)",detail:"No running. This replaces what would have been a threshold session — speed is the sharpest tendon load and it is not coming back until you are pain-free."},
 {d:"2026-09-23",t:"strength",title:"Leg Day A (modified) + isometrics",detail:"Full lower body EXCEPT no jumping and no single-leg plyo. Add resisted eversion 3×15 slow if the isometrics have been comfortable — that is the week-2 progression."},
 {d:"2026-09-24",t:"run",title:"Easy 4 mi",detail:"Flat, easy, new shoes. Report how it feels the next morning.<br><br>⚠️ <b>Note (Sep 22):</b> the doctor's 6-day no-run window from Sep 21 covers this day. Bike/pool instead unless you have been cleared."},
@@ -444,7 +484,8 @@ const ACTUALS = {
 '2026-09-15': {name:'VO2 800s', mi:5.02, sec:3000, time:'50:00', pace:'9:57 avg', elev:30, cal:510, effort:93, cadence:144, prs:1, note:'⚡ 10 min wu, 6×800 @ 7:45–8:05, easy to 5 mi — exactly as prescribed. Effort only 93 for a full VO2 session, the cheapest quality day of the block. "Solid run felt good, not really any pain while running." ⚠️ But: left inner ankle sore on heel walks and pain below the left knee on single-leg hops, "since long run" — that\'s posterior tibial / shin territory and it has been lingering for three days.'},
 '2026-09-16': {name:'no comment (test run)', mi:3.15, sec:1935, time:'32:15', elev:30, pace:'10:14', cal:322, effort:41, cadence:151, prs:2, note:'\ud83e\ude7a TEST RUN — stopped at 3.15 of 4 by choice, right call. Effort 41 is the LOWEST of the entire block, cadence 151 a new high. Key findings: shin pain is DIFFUSE on the fingertip test (not focal), and the ankle tendon pain IMPROVED mid-run after heel raises. Tendinopathy warms up with loading; bone stress worsens. Both signs point tendon, not bone.'},
 '2026-09-17': {name:'powered thru', mi:7.07, sec:4212, time:'1:10:12', elev:154, pace:'9:56', cal:761, effort:168, cadence:151, prs:2, note:'👟 New Adidas break-in run — "been running on dead foam on my brooks." ⚠️ Asked for 4–5 easy at 10:30–11:15; ran 7.07 at 9:56/mi, effort 168. That is the plan\'s full 7 at 35–75 sec/mi faster than assigned, in brand-new shoes, four days into a posterior tibial flare — three new stressors stacked on one run. Names the tendonitis explicitly ("supposed left ankle posterior tibial tendonitis been actin up") and reports "feelin good after 3 miles." Cadence 151 held, 2 PRs.'},
-'2026-09-19': {name:'Afternoon Run', mi:0.74, sec:474, time:'7:54', pace:'10:43', elev:4, cal:73, effort:4, cadence:153, prs:0, note:'🩺 Eight minutes. 0.74 mi at 10:43/mi, effort 4 — the smallest entry in the file by an order of magnitude. On a day written as cross-train with "2–3 easy is the ceiling," this reads as a test jog that got its answer early and stopped. No description left, so the reason is unconfirmed, but the pace was honest and the distance says he did not push it. Cadence 153.'}
+'2026-09-19': {name:'Afternoon Run', mi:0.74, sec:474, time:'7:54', pace:'10:43', elev:4, cal:73, effort:4, cadence:153, prs:0, note:'🩺 Eight minutes. 0.74 mi at 10:43/mi, effort 4 — the smallest entry in the file by an order of magnitude. On a day written as cross-train with "2–3 easy is the ceiling," this reads as a test jog that got its answer early and stopped. No description left, so the reason is unconfirmed, but the pace was honest and the distance says he did not push it. Cadence 153.'},
+'2026-09-21': {name:'Rehab leg day', mi:0, sec:2663, time:'44:23', elev:0, pace:'—', cal:138, effort:5, cadence:0, prs:0, note:'\ud83c\udfcb\ufe0f FIRST COMPLETE leg session of the block — 3\u00d730 s balance, heel raises 3\u00d715 bent-knee AND straight, BSS 3\u00d78, <b>SL-RDL 3\u00d78</b> (the one previously skipped), hip thrusts 3\u00d712. Posterior chain finally trained. No run.'}
 };
 // Sessions confirmed complete (Lolla rest/travel days + Strava-logged runs, strength days). Checked automatically; you can still uncheck.
 const SEED_DONE = {'2026-07-30':1,'2026-08-01':1,'2026-08-02':1,'2026-08-03':1,'2026-08-04':1,'2026-08-05':1,'2026-08-06':1,'2026-08-07':1,'2026-08-08':1,'2026-08-09':1,'2026-08-10':1,'2026-08-11':1,'2026-08-12':1,'2026-08-13':1,'2026-08-14':1,'2026-08-15':1,'2026-08-17':1,'2026-08-18':1,'2026-08-19':1,'2026-08-20':1,'2026-08-21':1,'2026-08-22':1,'2026-08-23':1,'2026-08-24':1,'2026-08-25':1,'2026-08-26':1,'2026-08-27':1,'2026-08-28':1,'2026-08-29':1,'2026-08-30':1,'2026-08-31':1,'2026-09-01':1,'2026-09-02':1,'2026-09-03':1,'2026-09-04':1,'2026-09-05':1,'2026-09-06':1,'2026-09-07':1,'2026-09-08':1,'2026-09-09':1,'2026-09-10':1,'2026-09-11':1,'2026-09-12':1,'2026-09-15':1,'2026-09-16':1,'2026-09-17':1,'2026-09-19':1,'2026-09-21':1};
@@ -655,6 +696,90 @@ if(nextDay && todayDay){ html+=bigCard(nextDay,null,'Up next'); }
 html+='<div class="card"><h3>Every morning (2 min)</h3><p>1) Check Oura readiness → green/yellow/red rules in the Recovery tab. 2) Do today\'s session (or its downgrade). 3) Check it off in the Plan tab.</p></div>';
 html+='<div class="note">💬 To change anything, just tell Claude: "swap Tuesday and Wednesday," "I missed this week — rebuild it," "recalibrate my paces from Strava," "the 16-miler felt great — lock in sub-4 pacing."</div>';
 tEl.innerHTML=html;
+
+// ── daily ankle symptom log ──
+(function(){
+  var KEY='ankleLog';
+  var sel={hop:null,am:null,walk:null};
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ return {}; } }
+  function save(o){ try{ localStorage.setItem(KEY,JSON.stringify(o)); }catch(e){} }
+  var log=load();
+  var today=todayStr();
+
+  document.querySelectorAll('.segrow').forEach(function(row){
+    var k=row.dataset.k;
+    row.querySelectorAll('.seg').forEach(function(b){
+      b.addEventListener('click',function(){
+        row.querySelectorAll('.seg').forEach(function(x){x.classList.remove('on');});
+        b.classList.add('on'); sel[k]=Number(b.dataset.v);
+        document.getElementById('symMsg').textContent='';
+      });
+    });
+  });
+
+  if(log[today]){
+    ['hop','am','walk'].forEach(function(k){
+      var v=log[today][k]; if(v===undefined||v===null) return;
+      sel[k]=v;
+      var row=document.querySelector('.segrow[data-k="'+k+'"]');
+      if(row){ var b=row.querySelector('.seg[data-v="'+v+'"]'); if(b) b.classList.add('on'); }
+    });
+  }
+
+  var colors=['#1baf7a','#eda100','#eb6834','#d03b3b'];
+  var labels=['clear','mild','moderate','bad'];
+
+  function render(){
+    var keys=Object.keys(log).sort().slice(-14).reverse();
+    var el=document.getElementById('symHist');
+    if(!keys.length){ el.innerHTML='<div style="font-size:12px;color:var(--muted);">No entries yet.</div>'; return; }
+    var scores=keys.map(function(d){
+      var e=log[d]; var vals=['hop','am','walk'].map(function(k){return typeof e[k]==='number'?e[k]:null;}).filter(function(v){return v!==null;});
+      return {d:d, avg: vals.length? vals.reduce(function(a,b){return a+b;},0)/vals.length : null, e:e};
+    });
+    var html='<div style="font-size:12px;font-weight:600;margin-bottom:6px;">Last '+keys.length+' day'+(keys.length>1?'s':'')+'</div>';
+    scores.forEach(function(s){
+      var dt=new Date(s.d+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'numeric',day:'numeric'});
+      var idx = s.avg===null?0:Math.min(3,Math.round(s.avg));
+      html+='<div class="symrow"><span class="symdot" style="background:'+colors[idx]+'"></span>'+
+        '<span style="width:78px;color:var(--muted);">'+dt+'</span>'+
+        '<span style="flex:1;">hop '+(s.e.hop!==undefined?labels[s.e.hop]:'—')+
+        ' · am '+(s.e.am!==undefined?labels[s.e.am]:'—')+
+        ' · walk '+(s.e.walk!==undefined?labels[s.e.walk]:'—')+'</span></div>';
+    });
+    if(scores.length>=6){
+      var recent=scores.slice(0,3).map(function(s){return s.avg;}).filter(function(v){return v!==null;});
+      var older=scores.slice(3,6).map(function(s){return s.avg;}).filter(function(v){return v!==null;});
+      if(recent.length && older.length){
+        var r=recent.reduce(function(a,b){return a+b;},0)/recent.length;
+        var o=older.reduce(function(a,b){return a+b;},0)/older.length;
+        var diff=o-r, msg, col;
+        if(diff>0.3){ msg='Improving — last 3 days better than the 3 before.'; col='var(--text-accent)'; }
+        else if(diff<-0.3){ msg='Getting worse — last 3 days worse than the 3 before. Back off.'; col='#d03b3b'; }
+        else { msg='Holding steady — no clear change over 6 days.'; col='var(--text-secondary)'; }
+        html+='<div style="margin-top:8px;font-size:12.5px;font-weight:500;color:'+col+';">'+msg+'</div>';
+      }
+    }
+    el.innerHTML=html;
+  }
+
+  document.getElementById('symSave').addEventListener('click',function(){
+    var msg=document.getElementById('symMsg');
+    if(sel.hop===null && sel.am===null && sel.walk===null){
+      msg.style.color='#d03b3b'; msg.textContent='Pick at least one before saving.'; return;
+    }
+    var entry={};
+    ['hop','am','walk'].forEach(function(k){ if(sel[k]!==null) entry[k]=sel[k]; });
+    log[today]=entry; save(log);
+    msg.style.color='var(--text-secondary)'; msg.textContent='Saved.';
+    render();
+  });
+
+  var dt=new Date(today+'T12:00:00');
+  document.getElementById('symToday').textContent=dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+(log[today]?' · already logged, tap to update':'');
+  render();
+})();
+
 </script>
 </body>
 </html>
