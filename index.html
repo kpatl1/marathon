@@ -108,6 +108,15 @@
           <button class="seg" data-v="3">Limping</button>
         </div></div>
     </div>
+    <div style="margin-top:10px;">
+      <div style="font-size:12px;font-weight:600;margin-bottom:4px;">Single-leg heel raises to failure (reps)</div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <label style="font-size:12px;color:var(--text-secondary);">Right <input type="number" id="hrR" min="0" max="60" step="1" style="width:66px;margin-left:4px;"></label>
+        <label style="font-size:12px;color:var(--text-secondary);">Left <input type="number" id="hrL" min="0" max="60" step="1" style="width:66px;margin-left:4px;"></label>
+        <span id="hrGap" style="font-size:12px;color:var(--text-secondary);"></span>
+      </div>
+      <div style="font-size:11.5px;color:var(--text-muted);margin-top:4px;">Fingertips on wall for balance only. Full height, ~1 sec up / 1 sec down. Right leg first. Healthy is 25+ and symmetric.</div>
+    </div>
     <div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
       <button id="symSave" style="border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:var(--radius);padding:7px 16px;font-size:13px;font-weight:500;cursor:pointer;">Save today</button>
       <span id="symMsg" style="font-size:12px;color:var(--muted);"></span>
@@ -726,6 +735,8 @@ tEl.innerHTML=html;
   });
 
   if(log[today]){
+    if(log[today].hrR!==undefined) document.getElementById('hrR').value=log[today].hrR;
+    if(log[today].hrL!==undefined) document.getElementById('hrL').value=log[today].hrL;
     ['hop','am','walk'].forEach(function(k){
       var v=log[today][k]; if(v===undefined||v===null) return;
       sel[k]=v;
@@ -753,7 +764,8 @@ tEl.innerHTML=html;
         '<span style="width:78px;color:var(--muted);">'+dt+'</span>'+
         '<span style="flex:1;">hop '+(s.e.hop!==undefined?labels[s.e.hop]:'—')+
         ' · am '+(s.e.am!==undefined?labels[s.e.am]:'—')+
-        ' · walk '+(s.e.walk!==undefined?labels[s.e.walk]:'—')+'</span></div>';
+        ' · walk '+(s.e.walk!==undefined?labels[s.e.walk]:'—')+
+        (s.e.hrR!==undefined&&s.e.hrL!==undefined?' · heel raises '+s.e.hrL+'L/'+s.e.hrR+'R':'')+'</span></div>';
     });
     if(scores.length>=6){
       var recent=scores.slice(0,3).map(function(s){return s.avg;}).filter(function(v){return v!==null;});
@@ -773,15 +785,34 @@ tEl.innerHTML=html;
 
   document.getElementById('symSave').addEventListener('click',function(){
     var msg=document.getElementById('symMsg');
-    if(sel.hop===null && sel.am===null && sel.walk===null){
+    var rv0=document.getElementById('hrR').value, lv0=document.getElementById('hrL').value;
+    if(sel.hop===null && sel.am===null && sel.walk===null && rv0==='' && lv0===''){
       msg.style.color='#d03b3b'; msg.textContent='Pick at least one before saving.'; return;
     }
     var entry={};
     ['hop','am','walk'].forEach(function(k){ if(sel[k]!==null) entry[k]=sel[k]; });
+    var rv=document.getElementById('hrR').value, lv=document.getElementById('hrL').value;
+    if(rv!=='') entry.hrR=Number(rv);
+    if(lv!=='') entry.hrL=Number(lv);
     log[today]=entry; save(log);
     msg.style.color='var(--text-secondary)'; msg.textContent='Saved.';
     render();
   });
+
+  function gap(){
+    var r=document.getElementById('hrR').value, l=document.getElementById('hrL').value;
+    var el=document.getElementById('hrGap');
+    if(r===''||l===''){ el.textContent=''; return; }
+    var d=Number(r)-Number(l);
+    var pct = Number(r)>0 ? Math.round(100*d/Number(r)) : 0;
+    if(d<=0){ el.style.color='var(--text-accent)'; el.textContent='symmetric ✓'; }
+    else if(pct<=10){ el.style.color='var(--text-accent)'; el.textContent=d+' rep deficit ('+pct+'%) — near symmetric'; }
+    else if(pct<=25){ el.style.color='var(--text-warning)'; el.textContent=d+' rep deficit ('+pct+'%)'; }
+    else { el.style.color='var(--text-danger)'; el.textContent=d+' rep deficit ('+pct+'%) — significant'; }
+  }
+  document.getElementById('hrR').addEventListener('input',gap);
+  document.getElementById('hrL').addEventListener('input',gap);
+  gap();
 
   var dt=new Date(today+'T12:00:00');
   document.getElementById('symToday').textContent=dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+(log[today]?' · already logged, tap to update':'');
